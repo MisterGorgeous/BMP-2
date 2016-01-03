@@ -14,7 +14,7 @@ public class MyScrollPane extends JScrollPane {
     }
 
     public boolean setScrollBarValue(int value){
-        System.out.print(bar.getValue() + "\n");
+        //System.out.print(bar.getValue() + "\n");
         bar.setValue(bar.getValue() + value);
         if((bar.getValue() + value > 0) && (bar.getValue() + value < 2269))
             return true;

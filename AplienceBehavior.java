@@ -8,13 +8,3 @@ public interface AplienceBehavior {
     public boolean pressedBehavior(Point p,Rectangle2D rect);
 }
 
-/*class Pressed implements AplienceBehavior{
-
-    @Override
-    public boolean pressedBehavior(Point p,Rectangle2D rect){
-        if(rect.contains(p)) return true;
-        return false;
-
-    }
-}
-*/

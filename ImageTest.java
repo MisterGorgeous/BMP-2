@@ -73,7 +73,6 @@ class ImageComponent extends JComponent {
     private Graphics2D g2;
     private Image image;
 
-    private BufferedImage lamp;
     private BufferedImage lampLight;
     private BufferedImage back;
     private BufferedImage lever;
@@ -81,6 +80,13 @@ class ImageComponent extends JComponent {
     private BufferedImage leveroff;
     private BufferedImage lever1;
     private BufferedImage no;
+    private BufferedImage turnback;
+    private BufferedImage turnlever;
+    private BufferedImage remote;
+    private BufferedImage remoteoff;
+    private BufferedImage remlever;
+    private BufferedImage bar;
+    private BufferedImage flag;
     private ArrayList<Aplience> apliences;
 
    // com.aspose.imaging.imageoptions.BmpOptions createOptions = new com.aspose.imaging.imageoptions.BmpOptions();
@@ -90,7 +96,6 @@ class ImageComponent extends JComponent {
         image = new ImageIcon("C:\\Users\\Siarhei\\Desktop\\BMP-2\\BMP-2.jpg").getImage();
 
         try {
-            lamp = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\lamp.jpg"));
             lampLight = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\lamplight.jpg"));
             back = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\lever2on.jpg"));
             lever = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\lever2.png"));
@@ -98,14 +103,25 @@ class ImageComponent extends JComponent {
             leveroff = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\leveroff1.jpg"));
             lever1 = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\revelmp.png"));
             no = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\leveroff.jpg"));
+            turnback = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\turnap.jpg"));
+            turnlever = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\turnlever.png"));
+            remote= ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remote2.jpg"));
+            remoteoff = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remote.jpg"));
+            remlever = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remoteturn.png"));
+            bar = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remote1.png"));
+            flag = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\flag1.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         apliences = new ArrayList<Aplience>();
-        apliences.add(new Aplience(new Lamp(lampLight, lamp, new Dimension(28, 14)), new Rectangle2D.Double(28, 14, 117, 130)));
+        apliences.add(new Aplience(new Lamp(lampLight, new Dimension(28, 14)), new Rectangle2D.Double(28, 14, 117, 130)));
         apliences.add(new Aplience(new Lever5(back, lever, new Dimension(279, 334)), new Rectangle2D.Double(300, 334, 58, 115)));
         apliences.add(new Aplience(new Lever4(leveron, leveroff, lever1,no, new Dimension(689, 103)), new Rectangle2D.Double(689, 119, 90, 100)));
+        apliences.add(new Aplience(new TurnAp(turnback, turnlever, new Dimension(341, 431)), new Rectangle2D.Double(374, 474, 90, 65)));
+        apliences.add(new Aplience(new RemotePush(remote, remoteoff, bar, new Dimension(485, 357)), new Rectangle2D.Double(497, 398, 51, 15)));
+        apliences.add(new Aplience(new RemoteTurn(remlever, new Dimension(596, 365)), new Rectangle2D.Double(576,365,64, 134)));
+        apliences.add(new Aplience(new Lamp(flag, new Dimension(1322, 144)), new Rectangle2D.Double(1340, 180, 40, 120)));
         //this.setLocation(0, 0);
 
 
