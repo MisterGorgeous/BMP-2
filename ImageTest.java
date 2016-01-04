@@ -87,6 +87,8 @@ class ImageComponent extends JComponent {
     private BufferedImage remlever;
     private BufferedImage bar;
     private BufferedImage flag;
+    private BufferedImage reload;
+    private BufferedImage reloadlever;
     private ArrayList<Aplience> apliences;
 
    // com.aspose.imaging.imageoptions.BmpOptions createOptions = new com.aspose.imaging.imageoptions.BmpOptions();
@@ -110,6 +112,8 @@ class ImageComponent extends JComponent {
             remlever = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remoteturn.png"));
             bar = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remote1.png"));
             flag = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\flag1.jpg"));
+            reload = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remote.png"));
+            reloadlever = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\remotelever.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -122,6 +126,7 @@ class ImageComponent extends JComponent {
         apliences.add(new Aplience(new RemotePush(remote, remoteoff, bar, new Dimension(485, 357)), new Rectangle2D.Double(497, 398, 51, 15)));
         apliences.add(new Aplience(new RemoteTurn(remlever, new Dimension(596, 365)), new Rectangle2D.Double(576,365,64, 134)));
         apliences.add(new Aplience(new Lamp(flag, new Dimension(1322, 144)), new Rectangle2D.Double(1340, 180, 40, 120)));
+        apliences.add(new Aplience(new ReloadLever(reload,reloadlever ,new Dimension(778, 262)), new Rectangle2D.Double(620, 254, 90, 100)));
         //this.setLocation(0, 0);
 
 

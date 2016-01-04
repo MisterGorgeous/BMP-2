@@ -263,7 +263,7 @@ class RemoteTurn implements ApliencePaint{
     public RemoteTurn(BufferedImage lever,Dimension dim){
         this.lever=lever;
         this.dim = dim;
-        currentPoint = new Point(698,20);
+        currentPoint = new Point(808,20);
         center= new Point(596,300);
         currentAngel = 0;
     }
@@ -320,5 +320,42 @@ class Flag implements ApliencePaint{
     @Override
     public void crossed(boolean value) {
 
+    }
+}
+
+class ReloadLever implements ApliencePaint{
+
+    private BufferedImage reload;
+    private BufferedImage lever;
+    private Dimension dim;
+    private Point currentPoint;
+
+
+
+    public ReloadLever(BufferedImage reload,BufferedImage lever,Dimension dim){
+        this.reload = reload;
+        this.lever=lever;
+        this.dim = dim;
+        currentPoint = new Point(710,254);
+
+    }
+    @Override
+    public void behavior(Graphics2D g2) {
+
+        AffineTransform transform = new AffineTransform();
+        //commands.takeAngel(currentAngel);
+        transform.translate(currentPoint.getX(),254);
+        g2.drawImage(lever, transform, null);
+        g2.drawImage(reload,dim.width,dim.height,null);
+    }
+
+    @Override
+    public void setPoint(Point p) {
+        this.currentPoint = p;
+
+    }
+
+    @Override
+    public void crossed(boolean value) {
     }
 }
