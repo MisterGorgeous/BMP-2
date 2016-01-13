@@ -4,6 +4,8 @@ public class MyScrollPane extends JScrollPane {
     MyHorizontallBar bar;
     public MyScrollPane(JComponent component){
         super(component);
+        setLocation(0,0);
+        setSize(800,600);
         setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         //scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         bar = new MyHorizontallBar();

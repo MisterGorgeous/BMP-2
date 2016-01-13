@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 
 public class ImageTest {
@@ -32,32 +33,33 @@ public class ImageTest {
  */
 class ImageFrame extends JFrame {
     public ImageFrame() {
-       // JLabel area = new JLabel();
 
-
-        //MyScrollBar bar = new MyScrollBar();
-        // area.addFocusListener(null);
-
-       /* Arrow arrow = new Arrow(10,243,210);
-        Commands commands = new Commands(area);*/
-        //Image  image = new ImageIcon("C:\\Users\\Siarhei\\Desktop\\BMP-2\\futurama.jpeg").getImage();
-        ImageComponent component = new ImageComponent();
+        MyPane area = new MyPane(120,5,200,50);
+        Commands commands = new Commands(area);
+        ImageComponent component = new ImageComponent(commands);
         MyScrollPane scrollPane = new MyScrollPane(component);
-
         MyButton right = new MyButton(755,0,40,570,8,scrollPane);
         MyButton left = new MyButton(0,0,40,570,-8,scrollPane);
 
+        Arrow arrow = new Arrow(10,500,210);
+
+        setLayout(null);
         add(right);
         add(left);
-        add(scrollPane, BorderLayout.CENTER);
-        Arrow arrow = new Arrow(10,500,210);
+        add(area);
+        add(scrollPane);
+
+
+
 
         component.setLayout(null);
        //add(component, BorderLayout.CENTER);
-      // this.add(area,BorderLayout.NORTH);
+
+       // component.add(area, BorderLayout.NORTH);
         component.add(arrow);
+      //  component.add(commands);
         // component.setLayout(null);
-        // add(component,BorderLayout.CENTER);
+
        /* add(area, BorderLayout.NORTH);
         component.add(arrow);*/
         pack();
@@ -90,12 +92,12 @@ class ImageComponent extends JComponent {
     private BufferedImage reload;
     private BufferedImage reloadlever;
     private ArrayList<Aplience> apliences;
+    private Commands commands;
 
    // com.aspose.imaging.imageoptions.BmpOptions createOptions = new com.aspose.imaging.imageoptions.BmpOptions();
 
-    public ImageComponent() {
-
-        image = new ImageIcon("C:\\Users\\Siarhei\\Desktop\\BMP-2\\BMP-2.jpg").getImage();
+    public ImageComponent(Commands commands) {
+       image = new ImageIcon("C:\\Users\\Siarhei\\Desktop\\BMP-2\\BMP-2.jpg").getImage();
 
         try {
             lampLight = ImageIO.read(new File("C:\\Users\\Siarhei\\Desktop\\BMP-2\\lamplight.jpg"));
@@ -117,6 +119,8 @@ class ImageComponent extends JComponent {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.commands=commands;
 
         apliences = new ArrayList<Aplience>();
         apliences.add(new Aplience(new Lamp(lampLight, new Dimension(28, 14)), new Rectangle2D.Double(28, 14, 117, 130)));
@@ -140,7 +144,7 @@ class ImageComponent extends JComponent {
                     aplience = iter.next();
                 if (aplience.rectContain(p)) {
                     //  arrow = new Arrow(10,243,210);
-                    aplience.setPoint(p);
+                    commands.perfomeCommand(aplience.setPoint(p));
                     repaint();
                 }}
 
@@ -161,7 +165,7 @@ class ImageComponent extends JComponent {
                     aplience = iter.next();
                     if (aplience.rectContain(p)) {
                         //  arrow = new Arrow(10,243,210);
-                        aplience.setPoint(p);
+                        commands.perfomeCommand(aplience.setPoint(p));
                         repaint();
                     }}
 
@@ -178,15 +182,14 @@ class ImageComponent extends JComponent {
                     aplience = iter.next();
                     if (aplience.rectContain(p)) {
                         //  arrow = new Arrow(10,243,210);
-                        aplience.crossed(true);
+                        commands.perfomeCommand(aplience.crossed(true));
                     }else aplience.crossed(false); }
                 repaint();
             }
         });
-
     }
 
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g){
         if (image == null) {
             System.out.print("Couldn't paint Background!!!");
             return;
@@ -201,11 +204,9 @@ class ImageComponent extends JComponent {
         while (iter.hasNext())
             iter.next().paintAplience(g2);
 
-
+        commands.repaintPane();
     }
 
 
-    public Dimension getPreferredSize() {
-        return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
+    public Dimension getPreferredSize(){return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);}
 }

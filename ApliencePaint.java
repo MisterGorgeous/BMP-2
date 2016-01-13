@@ -7,14 +7,15 @@ import java.awt.image.BufferedImage;
  */
 public interface ApliencePaint {
     public void behavior(Graphics2D g2);
-    public void setPoint(Point p);
-    public void crossed(boolean value);
+    public int setPoint(Point p);
+    public int crossed(boolean value);
 }
 
 class Lamp implements ApliencePaint{
     private BufferedImage on;
     private boolean inFocus;
     private Dimension dim;
+    private int comIndex;
 
 
     public Lamp(BufferedImage on,Dimension dim){
@@ -24,20 +25,23 @@ class Lamp implements ApliencePaint{
         }
     @Override
     public void behavior(Graphics2D g2) {
+        if(inFocus) g2.drawImage(on,dim.width,dim.height,null);
+    }
+
+    @Override
+    public int setPoint(Point p) {
         if(inFocus)
-            g2.drawImage(on,dim.width,dim.height,null);
-    }
-
-    @Override
-    public void setPoint(Point p) {
-        if(inFocus) inFocus = false;
+            inFocus = false;
         else inFocus = true;
+        return 0;
     }
 
     @Override
-    public void crossed(boolean value) {
-
+    public int crossed(boolean value) {
+        return -1;
     }
+
+
 }
 
 class Lever5 implements ApliencePaint{
@@ -58,18 +62,6 @@ class Lever5 implements ApliencePaint{
     @Override
     public void behavior(Graphics2D g2) {
         g2.drawImage(Background,dim.width,dim.height,null);
-
-        double lenghta = Math.sqrt(Math.pow(currentPoint.getX() - 302, 2) + Math.pow(currentPoint.getY(), 2));
-        double lenghtb = Math.sqrt(Math.pow(currentPoint.getX() - 302, 2) + Math.pow(currentPoint.getY()-390, 2));
-
-        double angel = Math.acos((390 * 390 + Math.pow(lenghtb, 2) - Math.pow(lenghta, 2)) / (2 * lenghtb * 390));
-        //if (angel > 0 && angel < 1) {
-         /* if (currentPoint.getX() < 200)
-                angel = -angel;*/
-            currentAngel = angel;
-
-        //}
-
         AffineTransform transform = new AffineTransform();
         //commands.takeAngel(currentAngel);
         transform.translate(302, 334);
@@ -78,13 +70,24 @@ class Lever5 implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
+    public int setPoint(Point p) {
         this.currentPoint =p;
+        double lenghta = Math.sqrt(Math.pow(currentPoint.getX() - 302, 2) + Math.pow(currentPoint.getY(), 2));
+        double lenghtb = Math.sqrt(Math.pow(currentPoint.getX() - 302, 2) + Math.pow(currentPoint.getY()-390, 2));
+
+        double angel = Math.acos((390 * 390 + Math.pow(lenghtb, 2) - Math.pow(lenghta, 2)) / (2 * lenghtb * 390));
+        //if (angel > 0 && angel < 1) {
+         /* if (currentPoint.getX() < 200)
+                angel = -angel;*/
+        currentAngel = angel;
+        if(currentAngel <= 0.05)
+            return 1;
+        return -1;
     }
 
     @Override
-    public void crossed(boolean value) {
-
+    public int crossed(boolean value) {
+        return -1;
     }
 }
 
@@ -107,7 +110,7 @@ class Lever4 implements ApliencePaint{
         this.no = no;
         this.dim = dim;
         currentPoint = new Point(697,119);
-        currentAngel = 1.57;
+        currentAngel = 0;
         inFocus = false;
         switched = false;
     }
@@ -115,27 +118,16 @@ class Lever4 implements ApliencePaint{
     public void behavior(Graphics2D g2) {
         if (inFocus) {
             g2.drawImage(on, dim.width, dim.height, null);
-
-            double lenghta = Math.sqrt(Math.pow(currentPoint.getX() - 778, 2) + Math.pow(currentPoint.getY(), 2));
-            double lenghtb = Math.sqrt(Math.pow(currentPoint.getX() - 778, 2) + Math.pow(currentPoint.getY() - 119, 2));
-
-            double angel = Math.acos((119 * 119 + Math.pow(lenghtb, 2) - Math.pow(lenghta, 2)) / (2 * lenghtb * 119));
-            //if (angel > 0 && angel < 1) {
-         /* if (currentPoint.getX() < 200)
-                angel = -angel;*/
-            currentAngel = Math.PI/2 -angel ;
-
-
-
-         if(currentAngel < -1.4){
+             
+            if (currentAngel < -1.4) {
                 switched = true;
             } else switched = false;
+
             AffineTransform transform = new AffineTransform();
             //commands.takeAngel(currentAngel);
             transform.translate(697, 119);
             transform.rotate(currentAngel, 81, 0);
             g2.drawImage(lever, transform, null);
-
         }
         else if(switched)
             g2.drawImage(off, dim.width, dim.height, null);
@@ -145,13 +137,30 @@ class Lever4 implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
+    public int setPoint(Point p) {
         this.currentPoint = p;
+        if(inFocus) {
+            double lenghta = Math.sqrt(Math.pow(currentPoint.getX() - 778, 2) + Math.pow(currentPoint.getY(), 2));
+            double lenghtb = Math.sqrt(Math.pow(currentPoint.getX() - 778, 2) + Math.pow(currentPoint.getY() - 119, 2));
+
+            double angel = Math.acos((119 * 119 + Math.pow(lenghtb, 2) - Math.pow(lenghta, 2)) / (2 * lenghtb * 119));
+            //if (angel > 0 && angel < 1) {
+         /* if (currentPoint.getX() < 200)
+                angel = -angel;*/
+            currentAngel = Math.PI / 2 - angel;
+
+
+            if (currentAngel < -1.4)
+                return 2;
+
+        }
+        return -1;
     }
 
     @Override
-    public void crossed(boolean value) {
+    public int crossed(boolean value) {
         inFocus = value;
+        return  -1;
     }
 }
 
@@ -188,12 +197,12 @@ class TurnAp implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
-        this.currentPoint =p;
+    public int setPoint(Point p) {
+        this.currentPoint =p; return  -1;
     }
 
     @Override
-    public void crossed(boolean value) {
+    public int crossed(boolean value) { return  -1;
 
     }
 }
@@ -241,13 +250,13 @@ class RemotePush implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
-        this.currentPoint =p;
+    public int setPoint(Point p) {
+        this.currentPoint =p; return  -1;
     }
 
     @Override
-    public void crossed(boolean value) {
-        this.value = value;
+    public int crossed(boolean value) {
+        this.value = value; return  -1;
     }
 }
 
@@ -280,13 +289,13 @@ class RemoteTurn implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
+    public int setPoint(Point p) {
         this.currentPoint = p;
-
+        return  -1;
     }
 
     @Override
-    public void crossed(boolean value) {
+    public int crossed(boolean value) { return  -1;
     }
 }
 
@@ -312,14 +321,14 @@ class Flag implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
+    public int setPoint(Point p) {
         if(inFocus) inFocus = false;
-        else inFocus = true;
+        else inFocus = true; return  -1;
     }
 
     @Override
-    public void crossed(boolean value) {
-
+    public int crossed(boolean value) {
+        return  -1;
     }
 }
 
@@ -350,12 +359,12 @@ class ReloadLever implements ApliencePaint{
     }
 
     @Override
-    public void setPoint(Point p) {
+    public int setPoint(Point p) {
         this.currentPoint = p;
-
+        return  -1;
     }
 
     @Override
-    public void crossed(boolean value) {
+    public int crossed(boolean value) { return  -1;
     }
 }

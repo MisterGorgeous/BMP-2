@@ -23,16 +23,14 @@ public class Aplience {
         return false;
     }
 
-    public void setPoint(Point p){
-            appaint.setPoint(p);
+    public int setPoint(Point p){
+            return appaint.setPoint(p);
     }
 
-    public void crossed(boolean value){
-        appaint.crossed(value);
+    public int crossed(boolean value){
+        return appaint.crossed(value);
     }
 
-    public void paintAplience(Graphics2D g2){
-        appaint.behavior(g2);
-    }
+    public void paintAplience(Graphics2D g2){appaint.behavior(g2);}
 
 }

@@ -1,33 +1,25 @@
-/**
- * Created by Siarhei on 26.12.2015.
- */
+
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by Siarhei on 16.11.2015.
- */
+
 public class Commands{
     private String currentComand;
-    private JLabel textPane;
-    boolean snapSwitched;
-    private final String first = new String("Check the operation of the electro runs guns and exhaust fan.");
-    private final String seccond = new String("Switch the shooting mode switch to O.");
-    private final String third = new String("Switch the shooting mode switch to M.");
-    private final String fourth = new String("Switch the shooting mode switch to B.");
+    private JTextPane textPane;
+    private int comCounter;
+    private final String commands[] = {"Switch the lamp.","Turn the handle of the ax down until it locks.","Stall tower."};
 
 
-    public Commands(JLabel textPane){
+
+    public Commands(JTextPane textPane){
         this.textPane = textPane;
-        currentComand = first;
-        snapSwitched = false;
-        // String string = new String();
-       // textPane.setOpaque(true);
-        textPane.setBackground(Color.DARK_GRAY);
+        currentComand = commands[0];
+        comCounter = 0;
+        textPane.setBackground(Color.cyan);
         textPane.setFont(new Font("Serif", Font.PLAIN, 16));
         textPane.setForeground(Color.red);
-        textPane.setHorizontalAlignment(JLabel.CENTER);
-        textPane.setPreferredSize(new Dimension(500,100));
+        //textPane.setHorizontalAlignment(JLabel.CENTER);
+        textPane.setPreferredSize(new Dimension(100,20));
         textPane.setLocation(150,5);
     /*try {
         byte[] data = str.getBytes("");
@@ -38,28 +30,21 @@ public class Commands{
         textPane.setText(currentComand);
     }
 
-    public void takeAngel(double angel){
-        if(angel <= -0.9 && currentComand == seccond) {
-            currentComand = third;
+    public boolean perfomeCommand(int comIndex){
+        if(comCounter == comIndex){
+            ++comCounter;
+            currentComand = commands[comCounter];
             textPane.setText(currentComand);
+            return true;
         }
-        if(angel <= 0.1 && angel >= -0.1 && currentComand == third){
-            currentComand = fourth;
-            textPane.setText(currentComand);
-        }
-        if(angel >= 0.9 && currentComand == fourth){
-            currentComand = null;
-            textPane.setText("Complite!!!");
+        else{
+            return false;
         }
 
     }
-    public void setSnapSwitched(){
-        if(currentComand == first)
-            if(snapSwitched == false) snapSwitched = true;
-            else{ snapSwitched = false; currentComand = seccond;
-                textPane.setText(currentComand);
 
-            }
+    public void repaintPane(){
+        textPane.repaint();
     }
 
 }
