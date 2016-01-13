@@ -123,13 +123,13 @@ class ImageComponent extends JComponent {
         this.commands=commands;
 
         apliences = new ArrayList<Aplience>();
-        apliences.add(new Aplience(new Lamp(lampLight, new Dimension(28, 14)), new Rectangle2D.Double(28, 14, 117, 130)));
+        apliences.add(new Aplience(new Lamp(lampLight, new Dimension(28, 14),0), new Rectangle2D.Double(28, 14, 117, 130)));
         apliences.add(new Aplience(new Lever5(back, lever, new Dimension(279, 334)), new Rectangle2D.Double(300, 334, 58, 115)));
         apliences.add(new Aplience(new Lever4(leveron, leveroff, lever1,no, new Dimension(689, 103)), new Rectangle2D.Double(689, 119, 90, 100)));
         apliences.add(new Aplience(new TurnAp(turnback, turnlever, new Dimension(341, 431)), new Rectangle2D.Double(374, 474, 90, 65)));
         apliences.add(new Aplience(new RemotePush(remote, remoteoff, bar, new Dimension(485, 357)), new Rectangle2D.Double(497, 398, 51, 15)));
         apliences.add(new Aplience(new RemoteTurn(remlever, new Dimension(596, 365)), new Rectangle2D.Double(576,365,64, 134)));
-        apliences.add(new Aplience(new Lamp(flag, new Dimension(1322, 144)), new Rectangle2D.Double(1340, 180, 40, 120)));
+        apliences.add(new Aplience(new Lamp(flag, new Dimension(1322, 144),7), new Rectangle2D.Double(1340, 180, 40, 120)));
         apliences.add(new Aplience(new ReloadLever(reload,reloadlever ,new Dimension(778, 262)), new Rectangle2D.Double(620, 254, 90, 100)));
         //this.setLocation(0, 0);
 

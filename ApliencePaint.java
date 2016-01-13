@@ -18,10 +18,11 @@ class Lamp implements ApliencePaint{
     private int comIndex;
 
 
-    public Lamp(BufferedImage on,Dimension dim){
+    public Lamp(BufferedImage on,Dimension dim,int index){
             this.on = on;
             inFocus = false;
             this.dim = dim;
+            comIndex = index;
         }
     @Override
     public void behavior(Graphics2D g2) {
@@ -33,7 +34,7 @@ class Lamp implements ApliencePaint{
         if(inFocus)
             inFocus = false;
         else inFocus = true;
-        return 0;
+        return comIndex;
     }
 
     @Override
@@ -118,7 +119,7 @@ class Lever4 implements ApliencePaint{
     public void behavior(Graphics2D g2) {
         if (inFocus) {
             g2.drawImage(on, dim.width, dim.height, null);
-             
+
             if (currentAngel < -1.4) {
                 switched = true;
             } else switched = false;
@@ -171,6 +172,8 @@ class TurnAp implements ApliencePaint{
     private Point currentPoint;
     private Point center;
     private double currentAngel;
+    private double x;
+    private double y;
 
 
     public TurnAp(BufferedImage on,BufferedImage off,Dimension dim){
@@ -179,17 +182,14 @@ class TurnAp implements ApliencePaint{
         this.dim = dim;
         currentPoint = new Point(374,474);
         center = new Point(410,372);
+        x =348;
+        y=469;
 
         currentAngel = 1.5;
     }
     @Override
     public void behavior(Graphics2D g2) {
         g2.drawImage(Background,dim.width,dim.height,null);
-
-        currentAngel = Math.atan(currentPoint.getX()-center.getX()/currentPoint.getY()-center.getY());
-        double x = 397 - Math.cos(currentAngel)*(74);
-        double y = 380 +  Math.sin(currentAngel+Math.PI/8)*(95);
-
         AffineTransform transform = new AffineTransform();
         //commands.takeAngel(currentAngel);
         transform.translate(x, y);
@@ -198,7 +198,12 @@ class TurnAp implements ApliencePaint{
 
     @Override
     public int setPoint(Point p) {
-        this.currentPoint =p; return  -1;
+        this.currentPoint =p;
+        currentAngel = Math.atan(currentPoint.getX()-center.getX()/currentPoint.getY()-center.getY());
+         x = 397 - Math.cos(currentAngel)*(74);
+         y = 380 +  Math.sin(currentAngel+Math.PI/8)*(95);
+        if(x >= 395) return 3;
+        return  -1;
     }
 
     @Override
@@ -229,21 +234,6 @@ class RemotePush implements ApliencePaint{
     }
     @Override
     public void behavior(Graphics2D g2) {
-
-
-
-        Rectangle rec = new Rectangle(530,400,15,15);
-
-        if(rec.contains(currentPoint)) {
-            if (inFocus) {
-                pain = Background;
-                inFocus = false;
-            } else {
-                pain = Backgroundoff;
-                inFocus = true;
-            }
-            currentPoint = new Point(0,0);
-        }
         g2.drawImage(pain,485,357,null);
         if(!value) g2.drawImage(bar,497,398,null);
 
@@ -251,7 +241,23 @@ class RemotePush implements ApliencePaint{
 
     @Override
     public int setPoint(Point p) {
-        this.currentPoint =p; return  -1;
+        this.currentPoint =p;
+
+        Rectangle rec = new Rectangle(530,400,15,15);
+
+        if(rec.contains(currentPoint)) {
+            currentPoint = new Point(0,0);
+            if (inFocus) {
+                pain = Background;
+                inFocus = false;
+                return 4;
+            } else {
+                pain = Backgroundoff;
+                inFocus = true;
+                return 6;
+            }
+
+        } return  -1;
     }
 
     @Override
@@ -279,56 +285,25 @@ class RemoteTurn implements ApliencePaint{
     @Override
     public void behavior(Graphics2D g2) {
 
-        currentAngel = Math.atan((currentPoint.getX()-center.getX())/(currentPoint.getY()-center.getY()));
+
         AffineTransform transform = new AffineTransform();
         //commands.takeAngel(currentAngel);
         transform.translate(dim.getWidth(), dim.getHeight());
         if(currentAngel<0.5 && currentAngel > -0.5)
-        transform.rotate(currentAngel, 32, 55);
+            transform.rotate(currentAngel, 32, 55);
         g2.drawImage(lever, transform, null);
     }
 
     @Override
     public int setPoint(Point p) {
         this.currentPoint = p;
+        currentAngel = Math.atan((currentPoint.getX()-center.getX())/(currentPoint.getY()-center.getY()));
+        if(currentAngel >= 0.45) return 5;
         return  -1;
     }
 
     @Override
     public int crossed(boolean value) { return  -1;
-    }
-}
-
-class Flag implements ApliencePaint{
-    private BufferedImage on;
-    private BufferedImage off;
-    private boolean inFocus;
-    private Dimension dim;
-
-
-    public Flag(BufferedImage on,BufferedImage off,Dimension dim){
-        this.on = on;
-        this.off = off;
-        inFocus = false;
-        this.dim = dim;
-    }
-    @Override
-    public void behavior(Graphics2D g2) {
-        if(inFocus)
-            g2.drawImage(on,dim.width,dim.height,null);
-        else
-            g2.drawImage(off,dim.width,dim.height,null);
-    }
-
-    @Override
-    public int setPoint(Point p) {
-        if(inFocus) inFocus = false;
-        else inFocus = true; return  -1;
-    }
-
-    @Override
-    public int crossed(boolean value) {
-        return  -1;
     }
 }
 
@@ -338,7 +313,7 @@ class ReloadLever implements ApliencePaint{
     private BufferedImage lever;
     private Dimension dim;
     private Point currentPoint;
-
+    private boolean reached;
 
 
     public ReloadLever(BufferedImage reload,BufferedImage lever,Dimension dim){
@@ -346,6 +321,7 @@ class ReloadLever implements ApliencePaint{
         this.lever=lever;
         this.dim = dim;
         currentPoint = new Point(710,254);
+        reached = false;
 
     }
     @Override
@@ -354,6 +330,7 @@ class ReloadLever implements ApliencePaint{
         AffineTransform transform = new AffineTransform();
         //commands.takeAngel(currentAngel);
         transform.translate(currentPoint.getX(),254);
+
         g2.drawImage(lever, transform, null);
         g2.drawImage(reload,dim.width,dim.height,null);
     }
@@ -361,6 +338,12 @@ class ReloadLever implements ApliencePaint{
     @Override
     public int setPoint(Point p) {
         this.currentPoint = p;
+        if(currentPoint.getX() <= 611){
+            reached = true; return 8;
+        }
+        if(currentPoint.getX() >= 709 && reached){
+            return 9;
+        }
         return  -1;
     }
 
