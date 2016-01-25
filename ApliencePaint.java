@@ -82,7 +82,7 @@ class Lever5 implements ApliencePaint{
                 angel = -angel;*/
         currentAngel = angel;
         if(currentAngel <= 0.05)
-            return 1;
+            return 2;
         return -1;
     }
 
@@ -152,7 +152,7 @@ class Lever4 implements ApliencePaint{
 
 
             if (currentAngel < -1.4)
-                return 2;
+                return 1;
 
         }
         return -1;
@@ -274,7 +274,6 @@ class RemoteTurn implements ApliencePaint{
     private Point center;
     private double currentAngel;
 
-
     public RemoteTurn(BufferedImage lever,Dimension dim){
         this.lever=lever;
         this.dim = dim;
@@ -285,7 +284,6 @@ class RemoteTurn implements ApliencePaint{
     @Override
     public void behavior(Graphics2D g2) {
 
-
         AffineTransform transform = new AffineTransform();
         //commands.takeAngel(currentAngel);
         transform.translate(dim.getWidth(), dim.getHeight());
@@ -293,7 +291,6 @@ class RemoteTurn implements ApliencePaint{
             transform.rotate(currentAngel, 32, 55);
         g2.drawImage(lever, transform, null);
     }
-
     @Override
     public int setPoint(Point p) {
         this.currentPoint = p;
@@ -301,11 +298,12 @@ class RemoteTurn implements ApliencePaint{
         if(currentAngel >= 0.45) return 5;
         return  -1;
     }
-
     @Override
     public int crossed(boolean value) { return  -1;
     }
 }
+
+
 
 class ReloadLever implements ApliencePaint{
 
@@ -338,11 +336,9 @@ class ReloadLever implements ApliencePaint{
     @Override
     public int setPoint(Point p) {
         this.currentPoint = p;
-        if(currentPoint.getX() <= 611){
-            reached = true; return 8;
+        if(currentPoint.getX() <= 630){reached = true; return 7;
         }
-        if(currentPoint.getX() >= 709 && reached){
-            return 9;
+        if(currentPoint.getX() >= 700 && reached){  return 8;
         }
         return  -1;
     }

@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.imageio.ImageIO;
@@ -21,7 +22,9 @@ public class ImageTest {
                 frame.setSize(800, 600);
                 frame.setResizable(false);
                 frame.setVisible(true);
-                frame.setLocation(20,20);
+                frame.setLocation(20, 20);
+                /*InputStreamReader isr = new InputStreamReader(System.in);
+                System.out.println(isr.getEncoding());*/
 
             }
         });
