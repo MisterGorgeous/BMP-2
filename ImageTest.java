@@ -37,14 +37,15 @@ public class ImageTest {
 class ImageFrame extends JFrame {
     public ImageFrame() {
 
-        MyPane area = new MyPane(120,5,200,50);
-        Commands commands = new Commands(area);
+        Arrow arrow = new Arrow(10,65,2);
+        MyPane area = new MyPane(200,5,400,50);
+        Commands commands = new Commands(area,arrow);
         ImageComponent component = new ImageComponent(commands);
         MyScrollPane scrollPane = new MyScrollPane(component);
         MyButton right = new MyButton(755,0,40,570,8,scrollPane);
         MyButton left = new MyButton(0,0,40,570,-8,scrollPane);
 
-        Arrow arrow = new Arrow(10,500,210);
+
 
         setLayout(null);
         add(right);
@@ -97,6 +98,7 @@ class ImageComponent extends JComponent {
     private ArrayList<Aplience> apliences;
     private Commands commands;
 
+
    // com.aspose.imaging.imageoptions.BmpOptions createOptions = new com.aspose.imaging.imageoptions.BmpOptions();
 
     public ImageComponent(Commands commands) {
@@ -125,6 +127,7 @@ class ImageComponent extends JComponent {
 
         this.commands=commands;
 
+
         apliences = new ArrayList<Aplience>();
         apliences.add(new Aplience(new Lamp(lampLight, new Dimension(28, 14),0), new Rectangle2D.Double(28, 14, 117, 130)));
         apliences.add(new Aplience(new Lever5(back, lever, new Dimension(279, 334)), new Rectangle2D.Double(300, 334, 58, 115)));
@@ -139,6 +142,7 @@ class ImageComponent extends JComponent {
 
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent event) {
+
                 Point p = event.getPoint();
                 Aplience aplience;
                 ListIterator<Aplience> iter = apliences.listIterator();
@@ -146,7 +150,6 @@ class ImageComponent extends JComponent {
                 while (iter.hasNext()){
                     aplience = iter.next();
                 if (aplience.rectContain(p)) {
-                    //  arrow = new Arrow(10,243,210);
                     commands.perfomeCommand(aplience.setPoint(p));
                     repaint();
                 }}
@@ -167,7 +170,6 @@ class ImageComponent extends JComponent {
                 while (iter.hasNext()){
                     aplience = iter.next();
                     if (aplience.rectContain(p)) {
-                        //  arrow = new Arrow(10,243,210);
                         commands.perfomeCommand(aplience.setPoint(p));
                         repaint();
                     }}
@@ -184,7 +186,6 @@ class ImageComponent extends JComponent {
                 while (iter.hasNext()){
                     aplience = iter.next();
                     if (aplience.rectContain(p)) {
-                        //  arrow = new Arrow(10,243,210);
                         commands.perfomeCommand(aplience.crossed(true));
                     }else aplience.crossed(false); }
                 repaint();

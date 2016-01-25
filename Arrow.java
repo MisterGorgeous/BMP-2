@@ -18,9 +18,6 @@ class Arrow extends  JPanel {
     private boolean parametr;
 
     public Arrow(int size,int x,int y){
-
-
-
         this.size = size;
         startPoint = new Point(size+1, 0);
         animationLength = size *3;
@@ -32,6 +29,13 @@ class Arrow extends  JPanel {
         this.setLocation(x-size,y);
         this.setSize(4 * size + 2, 10 * size);
         this.moveArrow();
+    }
+
+    public void setXY(int x,int y){
+        if(x == 0 && y == 0)
+            this.setLocation(2,2000);
+        else
+            this.setLocation(x-size,y);
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,4 +83,3 @@ class Arrow extends  JPanel {
 
 
 }
-
