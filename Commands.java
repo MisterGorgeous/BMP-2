@@ -9,6 +9,7 @@ public class Commands{
     private JTextPane textPane;
     private int comCounter;
     private Arrow arrow;
+    private MyDialog dialog;
     private String commands[] = {//"Switch the lamp.","Turn the handle of the ax down until it locks.","Stall tower."};
             "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c\u0020\u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c\u0020\u043f\u043b\u0430\u0444\u043e\u043d\u0430\u0020\u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f\u002e",
     "\u0420\u0430\u0441\u0442\u043e\u043f\u043e\u0440\u0438\u0442\u044c\u0020\u043f\u0443\u0448\u043a\u0443\u002e"
@@ -29,11 +30,12 @@ public class Commands{
     };
 
 
-    public Commands(JTextPane textPane,Arrow arrow){
+    public Commands(JTextPane textPane,Arrow arrow,MyDialog dialog){
         this.textPane = textPane;
        currentComand = commands[0];
         comCounter = 0;
         this.arrow = arrow;
+        this.dialog = dialog;
 // Преобразуем из Unicode в UnicodeLittleUnmarked
        /* try {
             byte[] data = currentComand.getBytes("UTF-8");
@@ -62,17 +64,28 @@ public class Commands{
         textPane.setText(currentComand);
     }
 
+    public void errorMessege(boolean madeCommand){
+        if(!madeCommand){
+            dialog.locate();
+            dialog.setVisible(true);
+        }else
+            dialog.setVisible(false);
+    }
+
     public boolean perfomeCommand(int comIndex){
         if(comCounter == comIndex){
             arrow.setXY(arrowX[comCounter],arrowY[comCounter]);
             ++comCounter;
             currentComand = commands[comCounter];
             textPane.setText(currentComand);
+            errorMessege(true);
             return true;
         }
-        else{
-            return false;
-        }
+        else if(comIndex >= 0)
+            errorMessege(false);
+
+
+        return false;
     }
 
     public void repaintPane(){

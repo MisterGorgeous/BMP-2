@@ -37,9 +37,10 @@ public class ImageTest {
 class ImageFrame extends JFrame {
     public ImageFrame() {
 
+        MyDialog dialog = new MyDialog(ImageFrame.this);
         Arrow arrow = new Arrow(10,65,2);
         MyPane area = new MyPane(200,5,400,50);
-        Commands commands = new Commands(area,arrow);
+        Commands commands = new Commands(area,arrow,dialog);
         ImageComponent component = new ImageComponent(commands);
         MyScrollPane scrollPane = new MyScrollPane(component);
         MyButton right = new MyButton(755,0,40,570,8,scrollPane);
@@ -210,6 +211,7 @@ class ImageComponent extends JComponent {
 
         commands.repaintPane();
     }
+
 
 
     public Dimension getPreferredSize(){return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);}
