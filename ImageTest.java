@@ -13,10 +13,16 @@ import javax.swing.text.JTextComponent;
 
 
 public class ImageTest {
+    public static boolean start = false;
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame = new ImageFrame();
+                JFrame frame;
+                if(start)
+                 frame = new ImageFrame();
+                else frame = new ImageFrame(true);
+
                 frame.setTitle("BMP-2");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setSize(800, 600);
@@ -29,6 +35,10 @@ public class ImageTest {
             }
         });
     }
+
+    public static void change(boolean index){
+        start = index;
+    }
 }
 
 /**
@@ -36,6 +46,7 @@ public class ImageTest {
  */
 class ImageFrame extends JFrame {
     public ImageFrame() {
+
 
         MyDialog dialog = new MyDialog(ImageFrame.this);
         Arrow arrow = new Arrow(10,65,2);
@@ -47,33 +58,51 @@ class ImageFrame extends JFrame {
         MyButton left = new MyButton(0,0,40,570,-8,scrollPane);
 
 
-
         setLayout(null);
         add(right);
         add(left);
         add(area);
         add(scrollPane);
 
-
-
-
         component.setLayout(null);
-       //add(component, BorderLayout.CENTER);
-
-       // component.add(area, BorderLayout.NORTH);
         component.add(arrow);
-      //  component.add(commands);
-        // component.setLayout(null);
 
-       /* add(area, BorderLayout.NORTH);
-        component.add(arrow);*/
         pack();
+    }
+    public ImageFrame(boolean index){
+        JButton  training = new JButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430");;
+        JButton exit = new JButton("\u0412\u044b\u0445\u043e\u0434");
+        Menu menu = new  Menu(training,exit);
+        JPanel panel = new JPanel();
+        panel.add(training);
+        panel.add(exit);
+        menu.add(panel, BorderLayout.CENTER);
     }
 }
 
-/**
- * A component that displays a tiled image
- */
+class Menu extends JComponent{
+   /* */
+    public Menu(JButton training,JButton exit){
+
+         training.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent event) {
+              ImageTest.change(true);
+
+             }
+         });
+
+
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                // program.dispatchEvent(new WindowEvent(program, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+
+    }
+
+}
+
+
 class ImageComponent extends JComponent {
     private static final int DEFAULT_WIDTH = 3060;
     private static final int DEFAULT_HEIGHT = 600;
