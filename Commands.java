@@ -79,6 +79,8 @@ public class Commands{
             currentComand = commands[comCounter];
             textPane.setText(currentComand);
             errorMessege(true);
+            if(comIndex == 8)
+                ImageTest.change(2);
             return true;
         }
         else if(comIndex >= 0)

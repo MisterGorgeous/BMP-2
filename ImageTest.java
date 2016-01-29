@@ -13,32 +13,112 @@ import javax.swing.text.JTextComponent;
 
 
 public class ImageTest {
-    public static boolean start = false;
+    private static double index = 0;
+    private static Object menu = new Object(new ImageFrame(true));
+    private static Object train = new Object(new ImageFrame());
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame frame;
-                if(start)
-                 frame = new ImageFrame();
-                else frame = new ImageFrame(true);
 
-                frame.setTitle("BMP-2");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(800, 600);
-                frame.setResizable(false);
-                frame.setVisible(true);
-                frame.setLocation(20, 20);
+               /* while (true) {
+                    if (start)
+                        frame = new ImageFrame();
+                    else
+                        frame = new ImageFrame(true);
+
+                    setFrame(frame);
+                }*/
+
+
+                menu.start();
+               /* try {
+                    menu.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+
+
+
+
+                   /*while(!changed) {
+                       try {
+                           Thread.sleep(1);
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }*/
+
+
                 /*InputStreamReader isr = new InputStreamReader(System.in);
                 System.out.println(isr.getEncoding());*/
 
             }
         });
     }
+    public static void change(double in){
+        index = in;
+        //object.interrupt();
+        System.out.print(in + "\n");
+        if (index == 1) {
+            train.start();
+           menu.interrupt();
 
-    public static void change(boolean index){
-        start = index;
+            try {
+                train.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+        } else if (index == 2) {
+            menu.start();
+            train.interrupt();
+
+            try {
+                menu.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (index == 3) {
+            menu.interrupt();
+            train.interrupt();
+        }
     }
+}
+
+
+
+class Object extends Thread{
+    private JFrame frame;
+
+    public Object(JFrame frame){
+        this.frame = frame;
+
+    }
+
+    @Override
+    public void run()
+    {
+        setFrame();
+
+        if(Thread.interrupted())
+            return;
+
+    }
+    public void setFrame(){
+        frame.setTitle("BMP-2");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setResizable(false);
+        frame.setVisible(true);
+        frame.setLocation(20, 20);
+    }
+   /* public void stopThread(boolean index){
+        frame.setVisible(index);
+    }*/
 }
 
 /**
@@ -70,37 +150,60 @@ class ImageFrame extends JFrame {
         pack();
     }
     public ImageFrame(boolean index){
+
+
         JButton  training = new JButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430");;
         JButton exit = new JButton("\u0412\u044b\u0445\u043e\u0434");
-        Menu menu = new  Menu(training,exit);
+        MenuComponent menu = new MenuComponent(training,exit);
+        setLayout(null);
         JPanel panel = new JPanel();
         panel.add(training);
         panel.add(exit);
-        menu.add(panel, BorderLayout.CENTER);
+        //add(panel);
+        add(menu, BorderLayout.CENTER);
+        //add(panel, BorderLayout.CENTER);
+
+
+
+        pack();
     }
 }
 
-class Menu extends JComponent{
-   /* */
-    public Menu(JButton training,JButton exit){
-
-         training.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent event) {
-              ImageTest.change(true);
-
-             }
-         });
-
-
+class MenuComponent extends JComponent{
+    private static final int DEFAULT_WIDTH = 800;
+    private static final int DEFAULT_HEIGHT = 600;
+    private Image image;
+    
+    public MenuComponent(JButton training,JButton exit){
+        image = new ImageIcon("C:\\Users\\Siarhei\\Desktop\\BMP-2\\BMP.jpg").getImage();
+        training.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                ImageTest.change(1);
+            }
+        });
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                // program.dispatchEvent(new WindowEvent(program, WindowEvent.WINDOW_CLOSING));
+                ImageTest.change(3);
             }
         });
 
     }
 
+    public void paintComponent(Graphics g) {
+        if (image == null) {
+            System.out.print("Couldn't paint Background!!!");
+            return;
+        }
+        super.paintComponent(g);
+        Graphics g2 = (Graphics2D) g;
+
+        //g2.drawImage(button, 109, 284, null);
+        g2.drawImage(image, 0, 0, null);
+
+    }
+    public Dimension getPreferredSize(){return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);}
 }
+
 
 
 class ImageComponent extends JComponent {
