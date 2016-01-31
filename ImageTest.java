@@ -14,44 +14,21 @@ import javax.swing.text.JTextComponent;
 
 public class ImageTest {
     private static double index = 0;
-    private static Object menu = new Object(new ImageFrame(true));
+  /*  private static Object menu = new Object(new ImageFrame(true));
     private static Object train = new Object(new ImageFrame());
+*/
+  private static ImageFrame menu = new ImageFrame(true);
+    private static  ImageFrame train = new ImageFrame();
+
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
+                menu.setFrame();
+                train.setFrame();
+                menu.visible(true);
+                train.visible(false);
 
-               /* while (true) {
-                    if (start)
-                        frame = new ImageFrame();
-                    else
-                        frame = new ImageFrame(true);
-
-                    setFrame(frame);
-                }*/
-
-
-                menu.start();
-               /* try {
-                    menu.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-
-
-
-
-                   /*while(!changed) {
-                       try {
-                           Thread.sleep(1);
-                       } catch (InterruptedException e) {
-                           e.printStackTrace();
-                       }
-                   }*/
-
-
-                /*InputStreamReader isr = new InputStreamReader(System.in);
-                System.out.println(isr.getEncoding());*/
 
             }
         });
@@ -61,72 +38,25 @@ public class ImageTest {
         //object.interrupt();
         System.out.print(in + "\n");
         if (index == 1) {
-            train.start();
-           menu.interrupt();
-
-            try {
-                train.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            train.visible(true);
+            menu.visible(false);
 
         } else if (index == 2) {
-            menu.start();
-            train.interrupt();
-
-            try {
-                menu.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            menu.visible(true);
+            train.dispose();
+            train = new ImageFrame();
+            train.setFrame();
+            train.visible(false);
         }
-        if (index == 3) {
-            menu.interrupt();
-            train.interrupt();
+        else if (index == 3) {
+            menu.exitAplication();
         }
     }
 }
 
 
-
-class Object extends Thread{
-    private JFrame frame;
-
-    public Object(JFrame frame){
-        this.frame = frame;
-
-    }
-
-    @Override
-    public void run()
-    {
-        setFrame();
-
-        if(Thread.interrupted())
-            return;
-
-    }
-    public void setFrame(){
-        frame.setTitle("BMP-2");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setResizable(false);
-        frame.setVisible(true);
-        frame.setLocation(20, 20);
-    }
-   /* public void stopThread(boolean index){
-        frame.setVisible(index);
-    }*/
-}
-
-/**
- * A frame with an image component
- */
 class ImageFrame extends JFrame {
     public ImageFrame() {
-
 
         MyDialog dialog = new MyDialog(ImageFrame.this);
         Arrow arrow = new Arrow(10,65,2);
@@ -155,11 +85,13 @@ class ImageFrame extends JFrame {
         JButton  training = new JButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430");;
         JButton exit = new JButton("\u0412\u044b\u0445\u043e\u0434");
         MenuComponent menu = new MenuComponent(training,exit);
-        setLayout(null);
         JPanel panel = new JPanel();
+        menu.setLayout(null);
+        //setLayout(null);
         panel.add(training);
         panel.add(exit);
         //add(panel);
+        add(panel, BorderLayout.NORTH);
         add(menu, BorderLayout.CENTER);
         //add(panel, BorderLayout.CENTER);
 
@@ -167,13 +99,29 @@ class ImageFrame extends JFrame {
 
         pack();
     }
+
+    public void setFrame(){
+        setTitle("BMP-2");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       setSize(800, 600);
+       setResizable(false);
+        //  frame.setVisible(true);
+        setLocation(20, 20);
+    }
+    public void visible(boolean index){
+      setVisible(index);
+    }
+
+    public void exitAplication() {
+        System.exit(0);
+    }
 }
 
 class MenuComponent extends JComponent{
-    private static final int DEFAULT_WIDTH = 800;
-    private static final int DEFAULT_HEIGHT = 600;
+    private static final int DEFAULT_WIDTH = 1000;
+    private static final int DEFAULT_HEIGHT = 501;
     private Image image;
-    
+
     public MenuComponent(JButton training,JButton exit){
         image = new ImageIcon("C:\\Users\\Siarhei\\Desktop\\BMP-2\\BMP.jpg").getImage();
         training.addActionListener(new ActionListener() {
