@@ -18,6 +18,7 @@ public class MyButton extends JButton {
     private int y[];
     private int time = 20;
    private  MyScrollPane pane;
+    private Timer animator;
 
     public MyButton(int xCoordinate,int yCoordinate,int weight,int lenght,int moveNum,MyScrollPane pane){
         super();
@@ -27,6 +28,7 @@ public class MyButton extends JButton {
         buttonSize = new Dimension(weight,lenght);
         this.moveNum = moveNum;
         size =10;
+        animator = null;
         startPoint = new Point(weight/2 -size,lenght/2 -size);
         setSize(buttonSize);
         setLocation(xCoordinate, yCoordinate);
@@ -41,7 +43,7 @@ public class MyButton extends JButton {
                 setContentAreaFilled(true);
                 // setBorderPainted(true);
                 sign = true;
-                new Timer(time, new ActionListener() {
+                animator = new Timer(time, new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (sign) {
                             if (!pane.setScrollBarValue(moveNum))
@@ -53,7 +55,8 @@ public class MyButton extends JButton {
                         } else return;
                         time += 20;
                     }
-                }).start();
+                });
+                animator.start();
 
 
             }
