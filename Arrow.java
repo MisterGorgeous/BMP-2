@@ -16,6 +16,7 @@ class Arrow extends  JPanel {
     private int animationLength;
     private int ycordinate;
     private boolean parametr;
+    private Point location;
 
     public Arrow(int size,int x,int y){
         this.size = size;
@@ -25,15 +26,17 @@ class Arrow extends  JPanel {
         this.x = new int[3];
         this.y = new int[3];
         parametr = true;
+        location = new Point(x-size,y);
         this.setOpaque(false);
         this.setLocation(x-size,y);
         this.setSize(4 * size + 2, 10 * size);
         this.moveArrow();
     }
 
-    public void setXY(int x,int y){
-        if(x == 0 && y == 0)
-            this.setLocation(2,2000);
+   public void setXY(int x,int y){
+       assert(x>=0 && y>=0);
+        if(x == 0)
+            location = new Point(0,0);
         else
             this.setLocation(x-size,y);
     }
@@ -41,22 +44,32 @@ class Arrow extends  JPanel {
         super.paintComponent(g);
         Graphics2D g2;
         g2 = (Graphics2D) g;
-
-        if(startPoint.getX() > size) {
-            x[0] = (int) startPoint.getX() - size;
-            x[1] = (int) startPoint.getX() + 3 * size;
-            x[2] = (int) startPoint.getX() + size;
-            y[0] = (int) startPoint.getY() + size * 4;
-            y[1] = (int) startPoint.getY() + size * 4;
-            y[2] = (int) startPoint.getY() + size * 7;
-        }
-
         g2.setPaint(new GradientPaint(new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size), new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f),
                 new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size * 3), Color.red));
 
-        g2.fill(new Rectangle((int) startPoint.getX(), (int) startPoint.getY(), size * 2, size * 4));
+        if (location.getX() > size) {
+            if(location.getY() <= 4*size && location.getY() >= size ) {
+                x[0] = (int) startPoint.getX() - size;
+                x[1] = (int) startPoint.getX() + 3 * size;
+                x[2] = (int) startPoint.getX() + size;
+                y[0] = (int) startPoint.getY() + size * 3;
+                y[1] = (int) startPoint.getY() + size * 3;
+                y[2] = (int) startPoint.getY();
+                g2.fill(new Rectangle((int) startPoint.getX(), (int) startPoint.getY() + 3*size, size * 2, size * 4));
+            }
+            else{
+                x[0] = (int) startPoint.getX() - size;
+                x[1] = (int) startPoint.getX() + 3 * size;
+                x[2] = (int) startPoint.getX() + size;
+                y[0] = (int) startPoint.getY() + size * 4;
+                y[1] = (int) startPoint.getY() + size * 4;
+                y[2] = (int) startPoint.getY() + size * 7;
+                g2.fill(new Rectangle((int) startPoint.getX(), (int) startPoint.getY(), size * 2, size * 4));
+            }
+
         g2.fill(new Polygon(x, y, 3));
 
+        } else return;
     }
 
     public void moveArrow(){
@@ -80,6 +93,7 @@ class Arrow extends  JPanel {
         int delay = 20;
         new Timer(delay,action).start();
     }
+
 
 
 }

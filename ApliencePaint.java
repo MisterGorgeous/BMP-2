@@ -45,6 +45,28 @@ class Lamp implements ApliencePaint{
 
 }
 
+class BYAz implements ApliencePaint{
+
+    public BYAz(){
+
+
+    }
+    @Override
+    public void behavior(Graphics2D g2) {
+
+    }
+
+    @Override
+    public int setPoint(Point p) {
+        return 1;
+    }
+
+    @Override
+    public int crossed(boolean value) { return  -1;
+    }
+}
+
+
 class Lever5 implements ApliencePaint{
     private BufferedImage Background;
     private BufferedImage lever;
@@ -82,7 +104,7 @@ class Lever5 implements ApliencePaint{
                 angel = -angel;*/
         currentAngel = angel;
         if(currentAngel <= 0.05)
-            return 2;
+            return 4;
         return -1;
     }
 
@@ -152,7 +174,7 @@ class Lever4 implements ApliencePaint{
 
 
             if (currentAngel < -1.4)
-                return 1;
+                return 3;
 
         }
         return -1;
@@ -202,7 +224,7 @@ class TurnAp implements ApliencePaint{
         currentAngel = Math.atan(currentPoint.getX()-center.getX()/currentPoint.getY()-center.getY());
          x = 397 - Math.cos(currentAngel)*(74);
          y = 380 +  Math.sin(currentAngel+Math.PI/8)*(95);
-        if(x >= 395) return 3;
+        if(x >= 395) return 5;
         return  -1;
     }
 
@@ -250,11 +272,11 @@ class RemotePush implements ApliencePaint{
             if (inFocus) {
                 pain = Background;
                 inFocus = false;
-                return 4;
+                return 8;
             } else {
                 pain = Backgroundoff;
                 inFocus = true;
-                return 6;
+                return 10;
             }
 
         } return  -1;
@@ -295,7 +317,7 @@ class RemoteTurn implements ApliencePaint{
     public int setPoint(Point p) {
         this.currentPoint = p;
         currentAngel = Math.atan((currentPoint.getX()-center.getX())/(currentPoint.getY()-center.getY()));
-        if(currentAngel >= 0.45) return 5;
+        if(currentAngel >= 0.45) return 9;
         return  -1;
     }
     @Override
@@ -336,9 +358,9 @@ class ReloadLever implements ApliencePaint{
     @Override
     public int setPoint(Point p) {
         this.currentPoint = p;
-        if(currentPoint.getX() <= 630){reached = true; return 7;
+        if(currentPoint.getX() <= 630){reached = true; return 18;
         }
-        if(currentPoint.getX() >= 700 && reached){  return 8;
+        if(currentPoint.getX() >= 700 && reached){  return 19;
         }
         return  -1;
     }
@@ -349,26 +371,6 @@ class ReloadLever implements ApliencePaint{
 }
 
 
-class BYAz implements ApliencePaint{
-
-    public BYAz(){
-
-
-    }
-    @Override
-    public void behavior(Graphics2D g2) {
-
-    }
-
-    @Override
-    public int setPoint(Point p) {
-      return 9;
-    }
-
-    @Override
-    public int crossed(boolean value) { return  -1;
-    }
-}
 
 class BYSnap implements ApliencePaint{
 
@@ -407,10 +409,10 @@ class BYSnap implements ApliencePaint{
     public int setPoint(Point p) {
         if (!snapSwitched) {
             snapSwitched = true;
-            return 10;
+            return 12;
         }
         snapSwitched = false;
-        return 14;
+        return -1;
     }
 
     @Override
@@ -462,11 +464,11 @@ class BYSwitch implements ApliencePaint{
         }
 
         if(currentAngel <= -0.9)
-            return 11 ;
-        else if(currentAngel >= -0.1 && currentAngel <= 0.1)
-            return 12 ;
-        else if(currentAngel >= 0.9)
             return 13 ;
+        else if(currentAngel >= -0.1 && currentAngel <= 0.1)
+            return 14 ;
+        else if(currentAngel >= 0.9)
+            return 15 ;
         else return  -1;
     }
 

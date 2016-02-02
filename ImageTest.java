@@ -14,21 +14,22 @@ import javax.swing.text.JTextComponent;
 
 
 public class ImageTest {
-    private static double index = 0;
+    private static double index = 999;
     private static ImageFrame menu = new ImageFrame(true);
-    //private static  ImageFrame train = new ImageFrame();
+    private static  ImageFrame train = new ImageFrame();;
     private static ImageFrame by = new ImageFrame(true,true);
 
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 menu.setFrame();
-                //train.setFrame();
-                by.setFrame();
+              //  train.setFrame();
+             //   by.setFrame();
                 menu.visible(true);
-               // train.visible(true);
-                by.setVisible(true);
+               // train.visible(false);
+               // by.setVisible(false);
 
 
             }
@@ -37,40 +38,68 @@ public class ImageTest {
 
     public static void change(double in){
         index = in;
-
-        if (index == 1) {
-            by.visible(true);
+        if (index == 0) {
+            menu.exitAplication();
+        }
+        else if (index == 1) {
+            //by.visible(false);
+            by.dispose();
             menu.visible(false);
+            train = new ImageFrame();
+            train.setFrame();
+            train.visible(true);
 
         } else if (index == 2) {
             menu.visible(true);
-           // train.dispose();
-           // train = new ImageFrame();
-            //train.visible(false);
+            train.dispose();
+           /* train = new ImageFrame();
+            train.setFrame();
+            train.visible(false);*/
+           by.dispose();
+           /* by = new ImageFrame(true,true);
+            by.setFrame();
+            by.visible(false);*/
         }
-        else if (index == 3) {
-            menu.exitAplication();
+        if(index == 3){
+            by = new ImageFrame(true,true);
+            by.setFrame();
+            by.visible(true);
+            menu.visible(false);
+            train.dispose();//train.visible(false);
         }
+
     }
 }
 
 
 class ImageFrame extends JFrame {
-    private MyDialog dialog;
-    private Arrow arrow;
-    private MyPane area;
-    private Commands commands;
+    private static Arrow arrow;
+    private static MyPane area;
+    private static Commands commands;
 
     public ImageFrame() {
 
-        setFeatures();
         ImageComponent component = new ImageComponent(commands);
         MyScrollPane scrollPane = new MyScrollPane(component);
         MyButton right = new MyButton(760,0,40,640,8,scrollPane);
         MyButton left = new MyButton(0,0,40,640,-8,scrollPane);
+        MenuButton  main = new MenuButton("\u0413\u043b\u0430\u0432\u043d\u043e\u0435\u0020\u041c\u0435\u043d\u044e",150,550,80,30);
+        MenuButton  by25 = new MenuButton("\u0411\u0423\u002d\u0032\u0035",300,550,80,30);
+        main.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                ImageTest.change(2);
+            }
+        });
+        by25.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                ImageTest.change(3);
+            }
+        });
 
-
+        commands.trainFrame(true);
         setLayout(null);
+        add(main);
+        add(by25);
         add(right);
         add(left);
         add(area);
@@ -82,8 +111,8 @@ class ImageFrame extends JFrame {
         pack();
     }
     public ImageFrame(boolean index){
-
-        MenuButton  training = new MenuButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430",300,150,250,40);;
+        setFeatures(new MyDialog(ImageFrame.this));
+        MenuButton  training = new MenuButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430",300,150,250,40);
         MenuButton exit = new MenuButton("\u0412\u044b\u0445\u043e\u0434",300,250,250,40);
         MenuComponent menu = new MenuComponent(training,exit);
       /*  JPanel panel = new JPanel();
@@ -101,10 +130,25 @@ class ImageFrame extends JFrame {
     }
     public ImageFrame(boolean index,boolean index1) {
 
-        setFeatures();
+       // setFeatures();
         ImageComponent component = new ImageComponent(commands,true);
+        MenuButton  main = new MenuButton("\u0413\u043b\u0430\u0432\u043d\u043e\u0435\u0020\u041c\u0435\u043d\u044e",150,550,80,30);
+        MenuButton  training = new MenuButton("\u041d\u0430\u0437\u0430\u0434",300,550,80,30);
 
+        main.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                ImageTest.change(2);
+            }
+        });
+        training.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                ImageTest.change(1);
+            }
+        });
+        commands.trainFrame(false);
         setLayout(null);
+        add(main);
+        add(training);
         add(area);
         component.setLayout(null);
         component.add(arrow);
@@ -122,9 +166,7 @@ class ImageFrame extends JFrame {
         setLocation(20, 20);
     }
 
-    private void setFeatures(){
-        if(commands != null) return;
-       dialog = new MyDialog(ImageFrame.this);
+  public static void setFeatures(MyDialog dialog){
        arrow = new Arrow(10,65,2);
         area = new MyPane(200,5,400,50);
        commands = new Commands(area,arrow,dialog);
@@ -156,7 +198,7 @@ class MenuComponent extends JComponent{
         });
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                ImageTest.change(3);
+                ImageTest.change(0);
             }
         });
 
@@ -199,12 +241,17 @@ class ImageComponent extends JComponent implements MouseMotionListener,MouseList
         image = readImage("BMP-2.jpg");
         apliences = new ArrayList<Aplience>();
         apliences.add(new Aplience(new Lamp(readImage("lamplight.jpg"), new Dimension(28, 14),0), new Rectangle2D.Double(28, 14, 117, 130)));
+        apliences.add(new Aplience(new Lamp(readImage("trapdoor.jpg"), new Dimension(371, 0),2), new Rectangle2D.Double(371, 0, 80, 40)));
         apliences.add(new Aplience(new Lever5(readImage("lever2on.jpg"), readImage("lever2.png"), new Dimension(279, 334)), new Rectangle2D.Double(300, 334, 58, 115)));
         apliences.add(new Aplience(new Lever4(readImage("leverfree.jpg"), readImage("leveroff1.jpg"), readImage("revelmp.png"),readImage("leveroff.jpg"), new Dimension(689, 103)), new Rectangle2D.Double(689, 119, 90, 100)));
         apliences.add(new Aplience(new TurnAp(readImage("turnap.jpg"), readImage("turnlever.png"), new Dimension(341, 431)), new Rectangle2D.Double(374, 474, 90, 65)));
+        apliences.add(new Aplience(new Lamp(readImage("cable.jpg"), new Dimension(1598,336),6), new Rectangle2D.Double(1618,356, 30, 100)));
+        apliences.add(new Aplience(new Lamp(readImage("cable.jpg"), new Dimension(0,163),7), new Rectangle2D.Double(0,163, 50, 25)));
         apliences.add(new Aplience(new RemotePush(readImage("remote2.jpg"), readImage("remote.jpg"),readImage("remote1.png"), new Dimension(485, 357)), new Rectangle2D.Double(497, 398, 51, 15)));
         apliences.add(new Aplience(new RemoteTurn(readImage("remoteturn.png"), new Dimension(596, 365)), new Rectangle2D.Double(576,365,64, 134)));
-        apliences.add(new Aplience(new Lamp(readImage("flag1.jpg"), new Dimension(1322, 144),7), new Rectangle2D.Double(1340, 180, 40, 120)));
+        apliences.add(new Aplience(new Lamp(readImage("cable2.jpg"), new Dimension(2128,0),11), new Rectangle2D.Double(2132,10, 30, 100)));
+        apliences.add(new Aplience(new Lamp(readImage("flag1.jpg"), new Dimension(1322, 144),16), new Rectangle2D.Double(1340, 180, 40, 120)));
+        apliences.add(new Aplience(new Lamp(readImage("whisper.jpg"), new Dimension(1148, 213),17), new Rectangle2D.Double(1148, 213, 100, 120)));
         apliences.add(new Aplience(new ReloadLever(readImage("remote.png"),readImage("remotelever.png") ,new Dimension(778, 262)), new Rectangle2D.Double(620, 254, 90, 100)));
 
         addMouseMotionListener(this);
