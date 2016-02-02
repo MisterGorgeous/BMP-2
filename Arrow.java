@@ -51,7 +51,7 @@ class Arrow extends  JPanel {
             y[2] = (int) startPoint.getY() + size * 7;
         }
 
-        g2.setPaint(new GradientPaint(new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size), Color.white,
+        g2.setPaint(new GradientPaint(new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size), new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f),
                 new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size * 3), Color.red));
 
         g2.fill(new Rectangle((int) startPoint.getX(), (int) startPoint.getY(), size * 2, size * 4));

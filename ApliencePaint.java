@@ -347,3 +347,130 @@ class ReloadLever implements ApliencePaint{
     public int crossed(boolean value) { return  -1;
     }
 }
+
+
+class BYAz implements ApliencePaint{
+
+    public BYAz(){
+
+
+    }
+    @Override
+    public void behavior(Graphics2D g2) {
+
+    }
+
+    @Override
+    public int setPoint(Point p) {
+      return 9;
+    }
+
+    @Override
+    public int crossed(boolean value) { return  -1;
+    }
+}
+
+class BYSnap implements ApliencePaint{
+
+    private BufferedImage snap;
+    private BufferedImage light;
+    private BufferedImage light1;
+    private Dimension dim;
+    private boolean snapSwitched;
+
+
+    public BYSnap(BufferedImage snap,BufferedImage light,BufferedImage light1,Dimension dim){
+        this.snap = snap;
+        this.light=light;
+        this.light1=light1;
+        this.dim = dim;
+        snapSwitched = false;
+
+    }
+    @Override
+    public void behavior(Graphics2D g2) {
+        AffineTransform transform = new AffineTransform();
+        transform.translate(dim.getWidth(), dim.getHeight());
+
+            if (snapSwitched) {
+                transform.rotate(-3, 6, 22);
+                g2.drawImage(light,162,230,null);
+                g2.drawImage(light1,156,377,null);
+
+            } else
+                transform.rotate(0, 6, 22);
+
+        g2.drawImage(snap, transform, null);
+    }
+
+    @Override
+    public int setPoint(Point p) {
+        if (!snapSwitched) {
+            snapSwitched = true;
+            return 10;
+        }
+        snapSwitched = false;
+        return 14;
+    }
+
+    @Override
+    public int crossed(boolean value) { return  -1;
+    }
+}
+
+class BYSwitch implements ApliencePaint{
+
+    private BufferedImage snap;
+    private Dimension dim;
+    private Point currentPoint;
+    private boolean snapSwitched;
+    private double currentAngel;
+
+
+    public BYSwitch(BufferedImage snap,Dimension dim){
+        this.snap = snap;
+        this.dim = dim;
+        currentPoint = new Point(710,254);
+        snapSwitched = false;
+        currentAngel=0;
+
+
+    }
+    @Override
+    public void behavior(Graphics2D g2) {
+        AffineTransform transform = new AffineTransform();
+        transform.translate(180, 320);
+        transform.rotate(currentAngel, 21, 27);
+        g2.drawImage(snap, transform, null);
+
+    }
+
+    @Override
+    public int setPoint(Point p) {
+        this.currentPoint =p;
+        double lenghta = Math.sqrt(Math.pow(currentPoint.getX() - 200, 2) + Math.pow(currentPoint.getY(), 2));
+        double lenghtb = Math.sqrt(Math.pow(currentPoint.getX() - 200, 2) + Math.pow(currentPoint.getY()-347, 2));
+
+        double angel = Math.acos((347 * 347 + Math.pow(lenghtb, 2) - Math.pow(lenghta, 2)) / (2 * lenghtb * 200));
+        //if (angel > 0 && angel < 1) {
+         /* if (currentPoint.getX() < 200)
+                angel = -angel;*/
+        if (angel > -1 && angel < 1) {
+            if (currentPoint.getX() < 200)
+                angel = -angel;
+            currentAngel = angel;
+        }
+
+        if(currentAngel <= -0.9)
+            return 11 ;
+        else if(currentAngel >= -0.1 && currentAngel <= 0.1)
+            return 12 ;
+        else if(currentAngel >= 0.9)
+            return 13 ;
+        else return  -1;
+    }
+
+    @Override
+    public int crossed(boolean value) { return  -1;
+    }
+}

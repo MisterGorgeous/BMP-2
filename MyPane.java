@@ -21,7 +21,7 @@ public class MyPane extends JTextPane {
         this.yCoordinate=yCoordinate;
         buttonSize = new Dimension(weight,lenght);
 
-        setBackground(new Color(0.09411765f, 0.9137255f, 0.101960786f, 1f));
+        setBackground(new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f));
       //  setOpaque(false);
 
         setFont(new Font("Serif", Font.PLAIN, 16));

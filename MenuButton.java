@@ -52,7 +52,7 @@ class AnimatedLabel extends JLabel {
     private int animationX;
     private int animationLength;
     private final float[] fractions = {0f, 1f};
-    private final Color[] colors = new Color[]{new Color(200, 200, 200), new Color(0, 0, 0)};
+    private final Color[] colors = new Color[]{new Color(0.9137255f, 0.039215688f, 0.07450981f, 1f), new Color(0.9137255f, 0.039215688f, 0.07450981f, 1f)};
 
     public AnimatedLabel(String text,int animationLength) {
         super(text);
@@ -61,7 +61,9 @@ class AnimatedLabel extends JLabel {
         animating = false;
         animationX = 0;
         setOpaque(false);
-        setFont(getFont().deriveFont(Font.BOLD).deriveFont(30f));
+        setFont(getFont().deriveFont(Font.BOLD).deriveFont(20f));
+       // setBackground(new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f));
+
     }
 
 
@@ -107,6 +109,7 @@ class AnimatedLabel extends JLabel {
         }
         // Переносим полученное изображение на исходный компонент
         g2d.dispose();
+       // g.setColor(new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f));
         g.drawImage(bi, 0, 0, null);
     }
 }

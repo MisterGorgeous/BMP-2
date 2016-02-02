@@ -32,7 +32,7 @@ public class MyButton extends JButton {
         startPoint = new Point(weight/2 -size,lenght/2 -size);
         setSize(buttonSize);
         setLocation(xCoordinate, yCoordinate);
-        setBackground(new Color(0.9137255f, 0.039215688f, 0.07450981f, 0.5f));
+        setBackground(new Color(0.9137255f, 0.039215688f, 0.07450981f, 1f));
                 //setOpaque(true);
                 setForeground(Color.MAGENTA);
         setContentAreaFilled(false);

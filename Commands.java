@@ -83,9 +83,9 @@ public class Commands{
                 ImageTest.change(2);
             return true;
         }
-        else if(comIndex >= 0)
+     /*   else if(comIndex >= 0)
             errorMessege(false);
-
+*/
 
         return false;
     }

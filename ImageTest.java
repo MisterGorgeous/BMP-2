@@ -16,16 +16,19 @@ import javax.swing.text.JTextComponent;
 public class ImageTest {
     private static double index = 0;
     private static ImageFrame menu = new ImageFrame(true);
-    private static  ImageFrame train = new ImageFrame();
+    //private static  ImageFrame train = new ImageFrame();
+    private static ImageFrame by = new ImageFrame(true,true);
 
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 menu.setFrame();
-                train.setFrame();
+                //train.setFrame();
+                by.setFrame();
                 menu.visible(true);
-                train.visible(false);
+               // train.visible(true);
+                by.setVisible(true);
 
 
             }
@@ -36,15 +39,14 @@ public class ImageTest {
         index = in;
 
         if (index == 1) {
-            train.visible(true);
+            by.visible(true);
             menu.visible(false);
 
         } else if (index == 2) {
             menu.visible(true);
-            train.dispose();
-            train = new ImageFrame();
-            train.setFrame();
-            train.visible(false);
+           // train.dispose();
+           // train = new ImageFrame();
+            //train.visible(false);
         }
         else if (index == 3) {
             menu.exitAplication();
@@ -54,16 +56,18 @@ public class ImageTest {
 
 
 class ImageFrame extends JFrame {
+    private MyDialog dialog;
+    private Arrow arrow;
+    private MyPane area;
+    private Commands commands;
+
     public ImageFrame() {
 
-        MyDialog dialog = new MyDialog(ImageFrame.this);
-        Arrow arrow = new Arrow(10,65,2);
-        MyPane area = new MyPane(200,5,400,50);
-        Commands commands = new Commands(area,arrow,dialog);
+        setFeatures();
         ImageComponent component = new ImageComponent(commands);
         MyScrollPane scrollPane = new MyScrollPane(component);
-        MyButton right = new MyButton(755,0,40,570,8,scrollPane);
-        MyButton left = new MyButton(0,0,40,570,-8,scrollPane);
+        MyButton right = new MyButton(760,0,40,640,8,scrollPane);
+        MyButton left = new MyButton(0,0,40,640,-8,scrollPane);
 
 
         setLayout(null);
@@ -78,6 +82,7 @@ class ImageFrame extends JFrame {
         pack();
     }
     public ImageFrame(boolean index){
+
         MenuButton  training = new MenuButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430",300,150,250,40);;
         MenuButton exit = new MenuButton("\u0412\u044b\u0445\u043e\u0434",300,250,250,40);
         MenuComponent menu = new MenuComponent(training,exit);
@@ -94,15 +99,37 @@ class ImageFrame extends JFrame {
 
         pack();
     }
+    public ImageFrame(boolean index,boolean index1) {
+
+        setFeatures();
+        ImageComponent component = new ImageComponent(commands,true);
+
+        setLayout(null);
+        add(area);
+        component.setLayout(null);
+        component.add(arrow);
+        add(component);
+
+        pack();
+    }
 
     public void setFrame(){
         setTitle("BMP-2");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setSize(800, 640);
-       //setResizable(false);
+       setSize(810, 630);
+       setResizable(false);
         //  frame.setVisible(true);
         setLocation(20, 20);
     }
+
+    private void setFeatures(){
+        if(commands != null) return;
+       dialog = new MyDialog(ImageFrame.this);
+       arrow = new Arrow(10,65,2);
+        area = new MyPane(200,5,400,50);
+       commands = new Commands(area,arrow,dialog);
+    }
+
     public void visible(boolean index){
       setVisible(index);
     }
@@ -152,9 +179,9 @@ class MenuComponent extends JComponent{
 
 
 
-class ImageComponent extends JComponent {
-    private static final int DEFAULT_WIDTH = 3060;
-    private static final int DEFAULT_HEIGHT = 600;
+class ImageComponent extends JComponent implements MouseMotionListener,MouseListener {
+    private int DEFAULT_WIDTH;
+    private int DEFAULT_HEIGHT;
     private Graphics2D g2;
     private Image image;
     private ArrayList<Aplience> apliences;
@@ -165,7 +192,8 @@ class ImageComponent extends JComponent {
       /*  URL imageURL = getClass().getResource("BMP-2.jpg");
        image = new ImageIcon(imageURL).getImage();*/
         //image = new ImageIcon("BMP-2.jpg").getImage();
-
+        DEFAULT_WIDTH = 3060;
+        DEFAULT_HEIGHT = 600;
         this.commands=commands;
 
         image = readImage("BMP-2.jpg");
@@ -179,60 +207,29 @@ class ImageComponent extends JComponent {
         apliences.add(new Aplience(new Lamp(readImage("flag1.jpg"), new Dimension(1322, 144),7), new Rectangle2D.Double(1340, 180, 40, 120)));
         apliences.add(new Aplience(new ReloadLever(readImage("remote.png"),readImage("remotelever.png") ,new Dimension(778, 262)), new Rectangle2D.Double(620, 254, 90, 100)));
 
-
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent event) {
-
-                Point p = event.getPoint();
-                Aplience aplience;
-                ListIterator<Aplience> iter = apliences.listIterator();
-
-                while (iter.hasNext()) {
-                    aplience = iter.next();
-                    if (aplience.rectContain(p)) {
-                        commands.perfomeCommand(aplience.setPoint(p));
-                        repaint();
-                    }
-                }
-
-            }
-
-            public void mouseReleased(MouseEvent event) {
-
-            }
-                });
-
-        addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent event) {
-                Point p = event.getPoint();
-                Aplience aplience;
-                ListIterator<Aplience> iter = apliences.listIterator();
-
-                while (iter.hasNext()){
-                    aplience = iter.next();
-                    if (aplience.rectContain(p)) {
-                        commands.perfomeCommand(aplience.setPoint(p));
-                        repaint();
-                    }}
-
-            }
-        });
-
-        addMouseMotionListener(new MouseAdapter() {
-            public void mouseMoved(MouseEvent event) {
-                Point p = event.getPoint();
-                Aplience aplience;
-                ListIterator<Aplience> iter = apliences.listIterator();
-
-                while (iter.hasNext()){
-                    aplience = iter.next();
-                    if (aplience.rectContain(p)) {
-                        commands.perfomeCommand(aplience.crossed(true));
-                    }else aplience.crossed(false); }
-                repaint();
-            }
-        });
+        addMouseMotionListener(this);
+        addMouseListener(this);
     }
+
+    public ImageComponent(Commands commands,boolean index) {
+      /*  URL imageURL = getClass().getResource("BMP-2.jpg");
+       image = new ImageIcon(imageURL).getImage();*/
+        //image = new ImageIcon("BMP-2.jpg").getImage();
+        DEFAULT_WIDTH = 810;
+        DEFAULT_HEIGHT = 630;
+        this.commands = commands;
+        setSize(810,630);
+        setLocation(0,0);
+        image = readImage("box.jpg");
+        apliences = new ArrayList<Aplience>();
+        apliences.add(new Aplience(new BYAz(), new Rectangle2D.Double(460, 265, 40, 30)));
+        apliences.add(new Aplience(new BYSnap(readImage("snap.jpg"), readImage("light.jpg"), readImage("light1.jpg"),new Dimension(252,358)), new Rectangle2D.Double(244, 355, 25, 45)));
+        apliences.add(new Aplience(new BYSwitch(readImage("switch.png"), new Dimension(0, 0)), new Rectangle2D.Double(170, 316, 60, 66)));
+
+        addMouseMotionListener(this);
+        addMouseListener(this);
+    }
+
 
     public  BufferedImage readImage(String path){
         URL imageURL = getClass().getResource(path);
@@ -266,4 +263,74 @@ class ImageComponent extends JComponent {
 
 
     public Dimension getPreferredSize(){return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);}
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Point p = e.getPoint();
+        Aplience aplience;
+        ListIterator<Aplience> iter = apliences.listIterator();
+
+        while (iter.hasNext()){
+            aplience = iter.next();
+            if (aplience.rectContain(p)) {
+                commands.perfomeCommand(aplience.setPoint(p));
+                repaint();
+            }}
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        Point p = e.getPoint();
+        Aplience aplience;
+        ListIterator<Aplience> iter = apliences.listIterator();
+
+        while (iter.hasNext()){
+            aplience = iter.next();
+            if (aplience.rectContain(p)) {
+                commands.perfomeCommand(aplience.crossed(true));
+            }else aplience.crossed(false); }
+        repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        Point p = e.getPoint();
+        Aplience aplience;
+        ListIterator<Aplience> iter = apliences.listIterator();
+
+        while (iter.hasNext()) {
+            aplience = iter.next();
+            if (aplience.rectContain(p)) {
+                commands.perfomeCommand(aplience.setPoint(p));
+                repaint();
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
+
+
+
+
+
+
