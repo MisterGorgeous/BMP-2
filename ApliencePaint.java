@@ -465,7 +465,7 @@ class BYSwitch implements ApliencePaint{
 
         if(currentAngel <= -0.9)
             return 13 ;
-        else if(currentAngel >= -0.1 && currentAngel <= 0.1)
+        else if(currentAngel >= -0.2 && currentAngel <= 0.2)
             return 14 ;
         else if(currentAngel >= 0.9)
             return 15 ;

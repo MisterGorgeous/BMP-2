@@ -26,7 +26,7 @@ class Arrow extends  JPanel {
         this.x = new int[3];
         this.y = new int[3];
         parametr = true;
-        location = new Point(x-size,y);
+        location = new Point(x,y);
         this.setOpaque(false);
         this.setLocation(x-size,y);
         this.setSize(4 * size + 2, 10 * size);
@@ -34,11 +34,12 @@ class Arrow extends  JPanel {
     }
 
    public void setXY(int x,int y){
-       assert(x>=0 && y>=0);
+      // assert(x>=0 && y>=0);
         if(x == 0)
             location = new Point(0,0);
-        else
-            this.setLocation(x-size,y);
+        else {location = new Point(x,y);
+            this.setLocation(x - size, y);
+        }
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -48,7 +49,7 @@ class Arrow extends  JPanel {
                 new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size * 3), Color.red));
 
         if (location.getX() > size) {
-            if(location.getY() <= 4*size && location.getY() >= size ) {
+            if(location.getY() <= 4.5*size && location.getY() >= size ) {
                 x[0] = (int) startPoint.getX() - size;
                 x[1] = (int) startPoint.getX() + 3 * size;
                 x[2] = (int) startPoint.getX() + size;

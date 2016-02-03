@@ -16,8 +16,8 @@ import javax.swing.text.JTextComponent;
 public class ImageTest {
     private static double index = 999;
     private static ImageFrame menu = new ImageFrame(true);
-    private static  ImageFrame train = new ImageFrame();;
-    private static ImageFrame by = new ImageFrame(true,true);
+    private static  ImageFrame train= new ImageFrame();;
+    private static ImageFrame by= new ImageFrame(true,true);
 
 
     public static void main(String[] args) {
@@ -25,11 +25,11 @@ public class ImageTest {
             public void run() {
 
                 menu.setFrame();
-              //  train.setFrame();
-             //   by.setFrame();
+                train.setFrame();
+                by.setFrame();
                 menu.visible(true);
-               // train.visible(false);
-               // by.setVisible(false);
+                train.visible(false);
+                by.setVisible(false);
 
 
             }
@@ -43,29 +43,41 @@ public class ImageTest {
         }
         else if (index == 1) {
             //by.visible(false);
-            by.dispose();
             menu.visible(false);
-            train = new ImageFrame();
-            train.setFrame();
+            ImageFrame.setFeatures(new MyDialog(null));
+           /* by = new ImageFrame(true,true);
+            by.setFrame();*/
+            by.visible(false);
+
+          /*  train = new ImageFrame();
+            train.setFrame();*/
             train.visible(true);
+
 
         } else if (index == 2) {
             menu.visible(true);
-            train.dispose();
+            train.visible(false);
            /* train = new ImageFrame();
             train.setFrame();
             train.visible(false);*/
-           by.dispose();
+           by.visible(false);
            /* by = new ImageFrame(true,true);
             by.setFrame();
             by.visible(false);*/
         }
-        if(index == 3){
-            by = new ImageFrame(true,true);
-            by.setFrame();
+        else if(index == 3){
+            /*by = new ImageFrame(true,true);
+            by.setFrame();*/
+            train.visible(false);
             by.visible(true);
             menu.visible(false);
-            train.dispose();//train.visible(false);
+
+            //train.dispose();//train.visible(false);
+        }
+        else  if(index == 4){
+            train.visible(true);
+            by.visible(false);
+            menu.visible(false);
         }
 
     }
@@ -75,11 +87,14 @@ public class ImageTest {
 class ImageFrame extends JFrame {
     private static Arrow arrow;
     private static MyPane area;
+    private static Arrow arrowB;
+    private static MyPane areaB;
     private static Commands commands;
+    private ImageComponent component;
 
     public ImageFrame() {
 
-        ImageComponent component = new ImageComponent(commands);
+        component = new ImageComponent(commands);
         MyScrollPane scrollPane = new MyScrollPane(component);
         MyButton right = new MyButton(760,0,40,640,8,scrollPane);
         MyButton left = new MyButton(0,0,40,640,-8,scrollPane);
@@ -96,7 +111,6 @@ class ImageFrame extends JFrame {
             }
         });
 
-        commands.trainFrame(true);
         setLayout(null);
         add(main);
         add(by25);
@@ -131,7 +145,7 @@ class ImageFrame extends JFrame {
     public ImageFrame(boolean index,boolean index1) {
 
        // setFeatures();
-        ImageComponent component = new ImageComponent(commands,true);
+        component = new ImageComponent(commands,true);
         MenuButton  main = new MenuButton("\u0413\u043b\u0430\u0432\u043d\u043e\u0435\u0020\u041c\u0435\u043d\u044e",150,550,80,30);
         MenuButton  training = new MenuButton("\u041d\u0430\u0437\u0430\u0434",300,550,80,30);
 
@@ -142,16 +156,16 @@ class ImageFrame extends JFrame {
         });
         training.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                ImageTest.change(1);
+                ImageTest.change(4);
             }
         });
-        commands.trainFrame(false);
+
         setLayout(null);
         add(main);
         add(training);
-        add(area);
+        add(areaB);
         component.setLayout(null);
-        component.add(arrow);
+        component.add(arrowB);
         add(component);
 
         pack();
@@ -162,14 +176,15 @@ class ImageFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        setSize(810, 630);
        setResizable(false);
-        //  frame.setVisible(true);
         setLocation(20, 20);
     }
 
   public static void setFeatures(MyDialog dialog){
-       arrow = new Arrow(10,65,2);
-        area = new MyPane(200,5,400,50);
-       commands = new Commands(area,arrow,dialog);
+      arrow = new Arrow(10,65,2);
+      area = new MyPane(200,5,400,50);
+      arrowB = new Arrow(10,0,0);
+      areaB = new MyPane(200,5,400,50);
+       commands = new Commands(area,areaB,arrow,arrowB,dialog);
     }
 
     public void visible(boolean index){
@@ -246,7 +261,7 @@ class ImageComponent extends JComponent implements MouseMotionListener,MouseList
         apliences.add(new Aplience(new Lever4(readImage("leverfree.jpg"), readImage("leveroff1.jpg"), readImage("revelmp.png"),readImage("leveroff.jpg"), new Dimension(689, 103)), new Rectangle2D.Double(689, 119, 90, 100)));
         apliences.add(new Aplience(new TurnAp(readImage("turnap.jpg"), readImage("turnlever.png"), new Dimension(341, 431)), new Rectangle2D.Double(374, 474, 90, 65)));
         apliences.add(new Aplience(new Lamp(readImage("cable.jpg"), new Dimension(1598,336),6), new Rectangle2D.Double(1618,356, 30, 100)));
-        apliences.add(new Aplience(new Lamp(readImage("cable.jpg"), new Dimension(0,163),7), new Rectangle2D.Double(0,163, 50, 25)));
+        apliences.add(new Aplience(new Lamp(readImage("kp.jpg"), new Dimension(0,163),7), new Rectangle2D.Double(0,163, 50, 25)));
         apliences.add(new Aplience(new RemotePush(readImage("remote2.jpg"), readImage("remote.jpg"),readImage("remote1.png"), new Dimension(485, 357)), new Rectangle2D.Double(497, 398, 51, 15)));
         apliences.add(new Aplience(new RemoteTurn(readImage("remoteturn.png"), new Dimension(596, 365)), new Rectangle2D.Double(576,365,64, 134)));
         apliences.add(new Aplience(new Lamp(readImage("cable2.jpg"), new Dimension(2128,0),11), new Rectangle2D.Double(2132,10, 30, 100)));
