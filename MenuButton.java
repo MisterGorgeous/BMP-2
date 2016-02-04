@@ -16,17 +16,18 @@ public class MenuButton extends JButton {
     private int yCoordinate;
     private AnimatedLabel label;
 
-    public MenuButton(String text,int xCoordinate,int yCoordinate,int weight,int lenght){
+    public MenuButton(String text,int xCoordinate,int yCoordinate,int weight,int lenght,float fontSize){
         super();
         this.xCoordinate=xCoordinate;
         this.yCoordinate=yCoordinate;
         this.weight = weight;
         this.lenght = lenght;
         setOpaque(false);
-        setBackground(new Color(0.9137255f, 0.039215688f, 0.07450981f, 0.0f));
+       // setContentAreaFilled(false);
+        setBackground(new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f));
         setSize(weight, lenght);
         setLocation(xCoordinate, yCoordinate);
-        label = new AnimatedLabel(text,lenght);
+        label = new AnimatedLabel(text,lenght,fontSize);
         add(label);
 
         addMouseListener(new MouseAdapter() {
@@ -54,14 +55,14 @@ class AnimatedLabel extends JLabel {
     private final float[] fractions = {0f, 1f};
     private final Color[] colors = new Color[]{new Color(0.9137255f, 0.039215688f, 0.07450981f, 1f), new Color(0.9137255f, 0.039215688f, 0.07450981f, 1f)};
 
-    public AnimatedLabel(String text,int animationLength) {
+    public AnimatedLabel(String text,int animationLength,float fontSize) {
         super(text);
         this.animationLength = animationLength;
         animator = null;
         animating = false;
         animationX = 0;
         setOpaque(false);
-        setFont(getFont().deriveFont(Font.BOLD).deriveFont(20f));
+        setFont(getFont().deriveFont(Font.BOLD).deriveFont(fontSize));
        // setBackground(new Color(0.105882354f, 0.3882353f, 0.28235295f, 1f));
 
     }
@@ -79,7 +80,7 @@ class AnimatedLabel extends JLabel {
 
                 // Увеличиваем координату вплоть до достижения ею конца компонента
                 if (animationX < getWidth() + animationLength) {
-                    animationX += 10;
+                    animationX += 5;
                     repaint();
                    // AnimatedButton.this.repaint();
                 } else {

@@ -1,49 +1,43 @@
-/**
- * Created by Siarhei on 27.01.2016.
- */
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 
-public class MyDialog extends JDialog
-{
-    private JFrame owner;
-    public MyDialog(JFrame owner)
-    {
-        super(owner, "\u041e\u0448\u0438\u0431\u043a\u0430\u002e", true);
-        // add HTML label to center
-        this.owner = owner;
+public class MyDialog extends JPanel {
+    private JLabel label;
 
-        add(
-                new JLabel(
-                        "<html><body text=\"green\"><h3><i>\u041d\u0435\u0432\u0435\u0440\u043d\u043e\u0435\u0020\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435\u002e</i></h3></body>"),
-                BorderLayout.CENTER);
+    public MyDialog() {
+        super();
+    //"\u041e\u0448\u0438\u0431\u043a\u0430\u002e", true);
+        setSize(200, 100);
+        setLocation(350, 260);
+        setBackground(new Color(0.77254903f, 0.015686275f, 0.12941177f, 1f));
+        setVisible(false);//<html><body text="red"><h3><i> </i></h3></body>
+        label = new JLabel("\u041d\u0435\u0432\u0435\u0440\u043d\u043e\u0435\u0020\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435\u002e");
+        label.setSize(200, 40);
+        label.setLocation(0,0);
+        label.setBackground(new Color(0.77254903f, 0.015686275f, 0.12941177f, 1f));
 
-        // OK button closes the dialog
-
-
-        JButton ok = new JButton("OK");
-        ok.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent event)
-            {
+        MenuButton continuer = new MenuButton("\u041f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u044c",2,50,96,40,7f);
+        continuer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
                 setVisible(false);
             }
         });
 
-        // add OK button to southern border
+        MenuButton more = new  MenuButton("\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435",102,50,96,40,7f);
+        more.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent event)
+            {
+                label.setText("\u041e\u0448\u0438\u0431\u043a\u0430\u002e");
+            }
+        });
 
-        JPanel panel = new JPanel();
-        panel.add(ok);
-        add(panel, BorderLayout.SOUTH);
-
-        pack();
+        add(label);
+        add(continuer);
+        add(more);
     }
 
-    public void locate(){
-        setLocation((int) (owner.getX() + owner.getSize().getWidth()/2.5), (int) (owner.getY()  + owner.getSize().getHeight()/2.5));
-
-    }
 }
 

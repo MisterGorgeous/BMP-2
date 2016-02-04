@@ -4,13 +4,16 @@ import java.io.UnsupportedEncodingException;
 
 
 public class Commands{
-    private String currentComand;
     private JTextPane area;
     private JTextPane areaB;
     private int comCounter;
     private Arrow arrow;
     private Arrow arrowB;
     private MyDialog dialog;
+    private MyDialog dialogB;
+    private Mark mark;
+    private Mark markTest;
+
     private String commands[] = {
     "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c\u0020\u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c\u0020\u043f\u043b\u0430\u0444\u043e\u043d\u0430\u0020\u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f\u002e",
             "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c\u0020\u0432\u044b\u043a\u043b\u044e\u0447\u0430\u0442\u0435\u043b\u044c\u0020\u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f\u0020\u0430\u0437\u0438\u043c\u0443\u0442\u0430\u043b\u044c\u043d\u043e\u0433\u043e\u0020\u0443\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044f\u002e"
@@ -34,23 +37,25 @@ public class Commands{
     ,"\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c\u0020\u0440\u0430\u0431\u043e\u0442\u0443\u0020\u044d\u043b\u0435\u043a\u0442\u0440\u043e\u0441\u043f\u0443\u0441\u043a\u0430\u0020\u0438\u0020\u043f\u043e\u0434\u0432\u0438\u0436\u043d\u044b\u0445\u0020\u0447\u0430\u0441\u0442\u0435\u0439\u0020\u043f\u0443\u043b\u0435\u043c\u0435\u0442\u0430\u002e"
    ,"\u0414\u043e\u043b\u043e\u0436\u0438\u0442\u044c\u0020\u043a\u043e\u043c\u0430\u043d\u0434\u0438\u0440\u0443\u0020\u043e\u0020\u0433\u043e\u0442\u043e\u0432\u043d\u043e\u0441\u0442\u0438\u002e"
 };
-    private int arrowX[] ={0,405,750,295,375,1593,11,530,610,530,2130,0,0,0,0,1370,1445, 715,0,0};
-    private int arrowY[] ={0,42, 42,260,390,280,90,330,330,330  ,42,0,0,0,0,   80,140,  195,0,0};
+    private int arrowX[] ={65,0,405,750,295,375,1593,11,530,610,530,2130,0,0,0,0,1370,1245, 715,0,0};
+    private int arrowY[] ={2,0,42, 42,260,390,280,90,330,330,330  ,42,0,0,0,0,   80,140,  195,0,0};
 
-    private int arrowBX[] ={475,0,0,0,0,0,0,0,0,0,0,240,165,165,165,0,0,0,0,0};
-    private int arrowBY[] ={190,0,0,0,0,0,0,0,0,0,0,280,240,240,240,0,0,0,0,0};
+    private int arrowBX[] ={0,475,0,0,0,0,0,0,0,0,0,0,240,165,165,165,0,0,0,0,0};
+    private int arrowBY[] ={0,190,0,0,0,0,0,0,0,0,0,0,280,240,240,240,0,0,0,0,0};
 
 
-    public Commands(JTextPane textPane,JTextPane textPane1,Arrow arrow,Arrow arrow1,MyDialog dialog){
+    public Commands(JTextPane textPane,JTextPane textPane1,Arrow arrow,Arrow arrow1,MyDialog dialog,MyDialog dialogB,Mark mark,Mark markTest){
         area = textPane;
         areaB = textPane1;
-        currentComand = commands[0];
-        comCounter = 0;
         this.arrow = arrow;
         this.arrowB = arrow1;
         this.dialog = dialog;
-        area.setText(currentComand);
-        areaB.setText(currentComand);
+        this.dialogB = dialogB;
+        this.mark = mark;
+        this.markTest = markTest;
+        comCounter = -1;
+        perfomeCommand(comCounter);
+
 // Преобразуем из Unicode в UnicodeLittleUnmarked
        /* try {
             byte[] data = currentComand.getBytes("UTF-8");
@@ -79,30 +84,47 @@ public class Commands{
 
     }
 
+    public void startCommands(){
+        comCounter = -1;
+        mark.setMistake();
+        markTest.setMistake();
+
+        perfomeCommand(comCounter);
+    }
+
     public void errorMessege(boolean madeCommand){
-        if(!madeCommand){
-            dialog.locate();
+        if(madeCommand){
             dialog.setVisible(true);
-        }else
+            dialogB.setVisible(true);
+        }else {
             dialog.setVisible(false);
+            dialogB.setVisible(false);
+        }
     }
 
     public boolean perfomeCommand(int comIndex){
         if(comCounter == comIndex){
-            arrow.setXY(arrowX[comCounter],arrowY[comCounter]);
-            arrowB.setXY(arrowBX[comCounter],arrowBY[comCounter]);
             ++comCounter;
-            currentComand = commands[comCounter];
-            area.setText(currentComand);
-            areaB.setText(currentComand);
-            errorMessege(true);
-           /* if(comIndex == 8)
-                ImageTest.change(2);*/
+            arrow.setXY(arrowX[comCounter],arrowY[comCounter]);
+            arrowB.setXY(arrowBX[comCounter], arrowBY[comCounter]);
+            area.setText(commands[comCounter]);
+            areaB.setText(commands[comCounter]);
+            errorMessege(false);
+            if(comCounter == 20){
+                mark.showScore();
+                markTest.showScore();
+            }
             return true;
         }
-     /*   else if(comIndex >= 0)
+        else if(comIndex == comCounter -1)
             errorMessege(false);
-*/
+        else if(comIndex >= 0) {
+            errorMessege(true);
+            mark.plussMistake();
+            markTest.plussMistake();
+        }
+
+        else errorMessege(false);
 
         return false;
     }
