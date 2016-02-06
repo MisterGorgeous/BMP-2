@@ -132,12 +132,12 @@ public class ImageTest {
             MenuButton test = new MenuButton("\u041a\u043e\u043d\u0442\u0440\u043e\u043b\u044c", 300, 150, 250, 40, 20f);
             MenuButton training = new MenuButton("\u0422\u0440\u0435\u043d\u0438\u0440\u043e\u0432\u043a\u0430", 300, 250, 250, 40, 20f);
             MenuButton exit = new MenuButton("\u0412\u044b\u0445\u043e\u0434", 300, 350, 250, 40, 20f);
-            MenuComponent menu = new MenuComponent(test,training, exit);
+            MenuComponent menu = new MenuComponent(test,training, exit,this.getWidth(),this.getHeight());
       /*  JPanel panel = new JPanel();
         panel.setSize(100,300);
         panel.setLocation(350,150);*/
             // menu.setLayout(null);
-            setBounds(0,0,this.getWidth(),this.getHeight());
+            //setBounds(0,0,this.getWidth(),this.getHeight());
             setLayout(null);
             add(test);
             add(training);
@@ -201,7 +201,7 @@ public class ImageTest {
             setTitle("BMP-2");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setSize(810, 630);
-           // setResizable(false);
+            setResizable(false);
             setLocation(20, 20);
         }
 
@@ -222,7 +222,7 @@ public class ImageTest {
         private static final int DEFAULT_HEIGHT = 501;
         private Image image;
 
-        public MenuComponent(MenuButton test,MenuButton training, MenuButton exit) {
+        public MenuComponent(MenuButton test,MenuButton training, MenuButton exit,int wight,int height) {
             URL imageURL = getClass().getResource("BMP.jpg");
             image = new ImageIcon(imageURL).getImage();
             setSize(800, 600);
@@ -252,8 +252,8 @@ public class ImageTest {
             }
             super.paintComponent(g);
             Graphics g2 = (Graphics2D) g;
+            g2.setColor(Color.cyan);
 
-            //g2.drawImage(button, 109, 284, null);
             g2.drawImage(image, 0, 0, null);
 
         }

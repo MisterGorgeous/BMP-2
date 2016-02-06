@@ -116,15 +116,15 @@ public class Commands{
             }
             return true;
         }
-        else if(comIndex == comCounter -1)
-            errorMessege(false);
+        /*else if(comIndex == comCounter -1)
+            errorMessege(false);*/
         else if(comIndex >= 0) {
             errorMessege(true);
             mark.plussMistake();
             markTest.plussMistake();
         }
 
-        else errorMessege(false);
+       //else errorMessege(false);
 
         return false;
     }
