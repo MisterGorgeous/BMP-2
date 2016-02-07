@@ -49,7 +49,7 @@ class Arrow extends  JPanel {
                 new Point((int) startPoint.getX() + size, (int) startPoint.getY() + size * 3), Color.red));
 
         if (location.getX() > size) {
-            if(location.getY() <= 4.5*size && location.getY() >= size ) {
+            if(location.getY() <= 4.2*size && location.getY() >= size ) {
                 x[0] = (int) startPoint.getX() - size;
                 x[1] = (int) startPoint.getX() + 3 * size;
                 x[2] = (int) startPoint.getX() + size;

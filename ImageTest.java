@@ -314,7 +314,7 @@ public class ImageTest {
             apliences = new ArrayList<Aplience>();
             apliences.add(new Aplience(new BYAz(), new Rectangle2D.Double(460, 265, 40, 30)));
             apliences.add(new Aplience(new BYSnap(readImage("snap.jpg"), readImage("light.jpg"), readImage("light1.jpg"), new Dimension(252, 358)), new Rectangle2D.Double(244, 355, 25, 45)));
-            apliences.add(new Aplience(new BYSwitch(readImage("switch.png"), new Dimension(0, 0)), new Rectangle2D.Double(170, 316, 60, 66)));
+            apliences.add(new Aplience(new BYSwitch(readImage("switch.png"), new Dimension(0, 0)), new Rectangle2D.Double(170, 310, 60, 66)));
 
             addMouseMotionListener(this);
             addMouseListener(this);

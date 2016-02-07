@@ -434,7 +434,7 @@ class BYSwitch implements ApliencePaint{
         this.dim = dim;
         currentPoint = new Point(710,254);
         snapSwitched = false;
-        currentAngel=0;
+        currentAngel=-0.5;
 
 
     }
@@ -457,6 +457,7 @@ class BYSwitch implements ApliencePaint{
         //if (angel > 0 && angel < 1) {
          /* if (currentPoint.getX() < 200)
                 angel = -angel;*/
+        System.out.print(angel + " " + currentPoint + "\n");
         if (angel > -1 && angel < 1) {
             if (currentPoint.getX() < 200)
                 angel = -angel;

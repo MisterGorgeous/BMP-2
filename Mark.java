@@ -48,6 +48,9 @@ public class Mark extends JPanel {
     }
 
     public void showScore(){
+        if(100 - num*5 <0)
+            score.setText(0+ "%");
+            else
         score.setText(100 - num*5 + "%");
         text.setText("\u0412\u0430\u0448\u0020\u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u003a");
         setVisible(true);
